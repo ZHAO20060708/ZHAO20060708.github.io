@@ -1,7 +1,7 @@
 ---
 title: C language
 date: 2024-11-03
-description: Sample article showcasing basic Markdown syntax and formatting for HTML elements.
+description: C语言中的一些基础概念和常见问题解答
 tags: 
     - C
 ---
