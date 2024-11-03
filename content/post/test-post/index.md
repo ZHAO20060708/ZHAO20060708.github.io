@@ -1,5 +1,5 @@
 ---
-title: Markdown Syntax Guide
+title: C language
 date: 2024-11-03
 description: Sample article showcasing basic Markdown syntax and formatting for HTML elements.
 tags: 
