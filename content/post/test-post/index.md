@@ -1,6 +1,6 @@
 ---
 title: Markdown Syntax Guide
-date: 2023-09-07
+date: 2024-11-03
 description: Sample article showcasing basic Markdown syntax and formatting for HTML elements.
 tags: 
     - C
