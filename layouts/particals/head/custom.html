@@ -1,0 +1,23 @@
+<style>
+    /* Overwrite CSS variable */
+    :root {
+        --article-font-family: "Source Han Sans SC VF", var(--base-font-family);
+        --sys-font-family: "Source Han Sans SC VF";
+        --zh-font-family: "Source Han Sans SC VF";
+        --base-font-family: "Source Han Sans SC VF";
+        --code-font-family: "Source Han Sans SC VF";
+        --article-font-family: "Source Han Sans SC VF";
+    }
+</style>
+
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "assets/font/SourceHanSansSC-VF.otf.woff2";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
