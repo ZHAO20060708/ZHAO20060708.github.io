@@ -324,7 +324,7 @@ int main() {
 
 ## Q:打印斐波那契数列的两种方法
 ## A:
-![](https://cdn.nlark.com/yuque/0/2024/png/48816560/1730421262433-b6092d2c-c3f4-4598-8969-c5fb634530a6.png)
+![](/content/post/test-post/283827d4f5cf467486960f3abce78ca1.png)
 
 ```plain
 #include <stdio.h>
