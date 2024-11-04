@@ -334,7 +334,8 @@ graph TD
     F --> G{计算 w=v+u<br>更新 u=v, v=w<br>输出 w}
     G --> H[结束]
 ```
-```mermaidgraph TD
+```mermaid
+graph TD
     A[开始] --> B[声明变量 w, u, v, j, k]
     B --> C[初始化 u=1, v=1, k=3]
     C --> D[输入 j]
