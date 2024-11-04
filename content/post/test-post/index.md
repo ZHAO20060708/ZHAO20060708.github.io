@@ -324,27 +324,8 @@ int main() {
 
 ## Q:打印斐波那契数列的两种方法
 ## A:
-```mermaid
-graph TD
-    A[开始] --> B[声明变量 w, u, v, j]
-    B --> C[初始化 u=1, v=1]
-    C --> D[输入 j]
-    D --> E[输出 u, v]
-    E --> F[for k=3 to j]
-    F --> G{计算 w=v+u<br>更新 u=v, v=w<br>输出 w}
-    G --> H[结束]
-```
-```mermaid
-graph TD
-    A[开始] --> B[声明变量 w, u, v, j, k]
-    B --> C[初始化 u=1, v=1, k=3]
-    C --> D[输入 j]
-    D --> E[输出 u, v]
-    E --> F[do]
-    F --> G{计算 w=v+u<br>更新 u=v, v=w<br>输出 w<br>k++}
-    G --> H[while k <= j]
-    H --> I[结束]
-```
+!()[export.svg]
+!()[export（1）.svg]
 
 ```C
 #include <stdio.h>
