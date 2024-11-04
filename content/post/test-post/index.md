@@ -324,7 +324,7 @@ int main() {
 
 ## Q:打印斐波那契数列的两种方法
 ## A:
-![image](283827d4f5cf467486960f3abce78ca1.png)
+![image](3.png)
 
 ```plain
 #include <stdio.h>
