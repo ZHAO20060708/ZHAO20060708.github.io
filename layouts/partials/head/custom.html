@@ -1,0 +1,33 @@
+<style>
+  :root {
+    --base-font-family: 'Source Serif 4', serif;
+    --mono-font-family: 'Source Code Pro', monospace;
+    --article-font-family: 'Noto Serif SC', var(--base-font-family);
+  }
+
+  body {
+    font-family: var(--base-font-family);
+  }
+
+  pre, code {
+    font-family: var(--mono-font-family);
+  }
+</style>
+
+<script>
+  (function () {
+    const customFonts = [
+      "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap"
+    ];
+
+    customFonts.forEach(font => {
+      const link = document.createElement('link');
+      link.href = font;
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      document.head.appendChild(link);
+    });
+  }());
+</script>
