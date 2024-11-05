@@ -17,7 +17,10 @@ comments: true
 这里是Eric Zhao，一个平平无奇的双学位大学生，目前就读于长春某985院校（~~长春好像就一个985~~），随缘更新编程相关内容（以及商学与管理学）
 
 # 注意
-以后的文章如果不另外说明均在<a href ="endeavouros.com"><img src="w.webp"></a>
+以后的文章如果不另外说明均在
+
+<a href ="https://endeavouros.com"><img src="w.webp"></a>
+
 平台上运行（基于archlinux）（~~大 家 快 来 使 endeavouros ！~~）
 
 
