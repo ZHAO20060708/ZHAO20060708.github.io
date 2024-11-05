@@ -324,8 +324,7 @@ int main() {
 
 ## Q:打印斐波那契数列的两种方法
 ## A:
-!()[export.svg]
-!()[export（1）.svg]
+!(001)[export.png]
 
 ```C
 #include <stdio.h>
