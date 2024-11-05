@@ -9,6 +9,7 @@ categories:
 tags:
     - Example Tag
 weight: 1
+comments: true
 ---
 
 # ~~呐......不知道说什么好呢~~

@@ -4,6 +4,7 @@ date: 2024-11-03
 description: C语言中的一些基础概念和常见问题解答
 tags: 
     - C
+comments: true
 ---
 ## Q:C语言中如何表示阶乘
 
