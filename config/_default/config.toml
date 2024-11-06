@@ -15,7 +15,3 @@ hasCJKLanguage = true
 pagerSize = 5
 
 math = true
-
-comments:
-  enabled: true
-  provider: giscus
