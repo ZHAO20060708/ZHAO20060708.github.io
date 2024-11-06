@@ -128,15 +128,19 @@ serverName = "cactus.chat"
 siteName = ""
 
 [comments.giscus]
-repo = ""
-repoID = ""
-category = ""
-categoryID = ""
-mapping = ""
-lightTheme = ""
-darkTheme = ""
-reactionsEnabled = 1
-emitMetadata = 0
+repo="ZHAO20060708/ZHAO20060708.github.io"
+repoID="R_kgDONJpEHg"
+category="Announcements"
+categoryID="DIC_kwDONJpEHs4CkBxC"
+mapping="pathname"
+strict="0"
+reactionsEnabled="1"
+emit-metadata="0"
+input-position="top"
+lightTheme="noborder_light"
+darkTheme="noborder_dark"
+lang="zh-CN"
+crossorigin="anonymous"
 
 [comments.gitalk]
 owner = ""
