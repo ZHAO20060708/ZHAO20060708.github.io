@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Example Category on Eric's Blog</title><link>https://zhao20060708.github.io/categories/example-category/</link><description>Recent content in Example Category on Eric's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 05 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://zhao20060708.github.io/categories/example-category/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World</title><link>https://zhao20060708.github.io/p/hello-world/</link><pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><guid>https://zhao20060708.github.io/p/hello-world/</guid><description>&lt;img src="https://zhao20060708.github.io/p/hello-world/cover.jpg" alt="Featured image of post Hello World" />&lt;h1 id="呐不知道说什么好呢">&lt;del>呐&amp;hellip;&amp;hellip;不知道说什么好呢&lt;/del>
+&lt;/h1>&lt;p>这里是Eric Zhao，一个平平无奇的双学位大学生，目前就读于长春某985院校（&lt;del>长春好像就一个985&lt;/del>），随缘更新编程、数学相关内容（以及商学与管理学）&lt;/p>
+&lt;h1 id="注意">注意
+&lt;/h1>&lt;p>以后的文章如果不另外说明均在&lt;/p>
+&lt;p>&lt;a href ="https://endeavouros.com">&lt;img src="w.webp">&lt;/a>&lt;/p>
+&lt;p>平台上运行（基于archlinux）（&lt;del>大 家 快 来 使 endeavouros ！&lt;/del>）&lt;/p>
+&lt;p>Want a site like this? Check out &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack-starter" target="_blank" rel="noopener"
+>hugo-theme-stack-stater&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+>Pawel Czerwinski&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>
+&lt;/blockquote></description></item></channel></rss>
