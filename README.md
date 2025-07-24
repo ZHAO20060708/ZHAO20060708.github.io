@@ -1,69 +1,88 @@
-<img align="right" width="150" alt="logo" src="https://user-images.githubusercontent.com/5889006/190859553-5b229b4f-c476-4cbd-928f-890f5265ca4c.png">
+# Eric's Blog
 
-# Hugo Theme Stack Starter Template
+[![Deploy to Github Pages](https://github.com/ZHAO20060708/ZHAO20060708.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/ZHAO20060708/ZHAO20060708.github.io/actions/workflows/deploy.yml)
 
-This is a quick start template for [Hugo theme Stack](https://github.com/CaiJimmy/hugo-theme-stack). It uses [Hugo modules](https://gohugo.io/hugo-modules/) feature to load the theme.
+Welcome to Eric Zhao's personal blog! This site is built with [Hugo](https://gohugo.io/) using the [Hugo theme Stack](https://github.com/CaiJimmy/hugo-theme-stack).
 
-It comes with a basic theme structure and configuration. GitHub action has been set up to deploy the theme to a public GitHub page automatically. Also, there's a cron job to update the theme automatically everyday.
+## About This Blog
 
-## Get started
+This is a personal blog by Eric Zhao (赵), a double-degree university student from Changchun. The blog primarily features content in Chinese (简体中文) covering:
 
-1. Click *Use this template*, and create your repository as `<username>.github.io` on GitHub.
-![Step 1](https://user-images.githubusercontent.com/5889006/156916624-20b2a784-f3a9-4718-aa5f-ce2a436b241f.png)
+- **Programming & Computer Science** - C language tutorials, programming concepts, and technical notes
+- **Mathematics** - Mathematical concepts, problem-solving, and learning notes  
+- **Business & Management** - Studies in business and management theory
+- **Personal Learning Journey** - Experiences and insights from university studies
 
-2. Once the repository is created, create a GitHub codespace associated with it.
-![Create codespace](https://user-images.githubusercontent.com/5889006/156916672-43b7b6e9-4ffb-4704-b4ba-d5ca40ffcae7.png)
+The blog runs on EndeavourOS (Arch Linux-based) and content is updated on a random schedule (随缘更新).
 
-3. And voila! You're ready to go. The codespace has been configured with the latest version of Hugo extended, just run `hugo server` in the terminal and see your new site in action.
+## Visit the Blog
 
-4. Check `config` folder for the configuration files. You can edit them to suit your needs. Make sure to update the `baseurl` property in `config/_default/config.toml` to your site's URL.
+🌐 **Live Site**: [https://zhao20060708.github.io](https://zhao20060708.github.io)
 
-5. Open Settings -> Pages. Change the build branch from `master` to `gh-pages`.
-![Build](https://github.com/namanh11611/hugo-theme-stack-starter/assets/16586200/12c763cd-bead-4923-b610-8788f388fcb5)
+## Technical Details
 
-6. Once you're done editing the site, just commit it and push it. GitHub action will deploy the site automatically to GitHub page asociated with the repository.
-![GitHub action](https://user-images.githubusercontent.com/5889006/156916881-90b8bb9b-1925-4e60-9d7a-8026cda729bf.png)
+This blog is built using:
+- **Hugo** - Static site generator
+- **Hugo Theme Stack v3** - A beautiful and feature-rich Hugo theme
+- **GitHub Pages** - Hosting platform
+- **GitHub Actions** - Automated deployment and theme updates
 
----
+### Automatic Deployment
 
-In case you don't want to use GitHub codespace, you can also run this template in your local machine. **You need to install Git, Go and Hugo extended locally.**
+The site automatically deploys to GitHub Pages when changes are pushed to the `master` branch. The deployment workflow:
+1. Builds the site using Hugo
+2. Deploys to the `gh-pages` branch
+3. Updates are live within minutes
 
-## Update theme manually
+### Automatic Theme Updates
 
-Run:
+The Hugo theme is automatically updated daily via a scheduled GitHub Action to ensure the latest features and security updates.
+
+## Development
+
+### Local Development Setup
+
+If you want to run this blog locally for development:
+
+**Prerequisites**: You need Git, Go, and Hugo extended installed locally.
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ZHAO20060708/ZHAO20060708.github.io.git
+   cd ZHAO20060708.github.io
+   ```
+
+2. Install Hugo modules:
+   ```bash
+   hugo mod download
+   ```
+
+3. Run the development server:
+   ```bash
+   hugo server
+   ```
+
+4. Open your browser to `http://localhost:1313`
+
+### Updating the Theme
+
+To manually update the Hugo theme:
 
 ```bash
 hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v3
 hugo mod tidy
 ```
 
-> This starter template has been configured with `v3` version of theme. Due to the limitation of Go module, once the `v4` or up version of theme is released, you need to update the theme manually. (Modifying `config/module.toml` file)
+> **Note**: This starter template is configured with `v3` of the theme. When `v4` or later versions are released, the `config/module.toml` file will need manual updates due to Go module limitations.
 
-## Deploy to another static page hostings
+## Contributing
 
-If you want to build this site using another static page hosting, you need to make sure they have Go installed in the machine. 
+Feel free to open issues or submit pull requests if you find any problems or have suggestions for improvements.
 
-<details>
-  <summary>Vercel</summary>
-  
-You need to overwrite build command to install manually Go:
+## License
 
-```
-amazon-linux-extras install golang1.11 && hugo --gc --minify
-```
+This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
 
-![](https://user-images.githubusercontent.com/5889006/156917172-01e4d418-3469-4ffb-97e4-a905d28b8424.png)
+---
 
-If you are using Node.js 20, you need to overwrite the install command to install manually Go:
-
-```
-dnf install -y golang
-```
-
-![image](https://github.com/zhi-yi-huang/hugo-theme-stack-starter/assets/83860323/777c1109-dfc8-4893-9db7-1305ec027cf5)
-
-
-Make sure also to specify Hugo version in the environment variable `HUGO_VERSION` (Use the latest version of Hugo extended):
-
-![Environment variable](https://user-images.githubusercontent.com/5889006/156917212-afb7c70d-ab85-480f-8288-b15781a462c0.png)
-</details>
+*Built with ❤️ using Hugo and deployed on GitHub Pages*
