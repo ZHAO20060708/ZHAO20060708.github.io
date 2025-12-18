@@ -4,11 +4,8 @@ date: 2025-12-18 00:00:00+0000
 description: Explanations of key logistics terms and short-answer Q&A.
 tags:
 	- logistics
-	- supply-chain
-	- study-notes
 categories:
-	- logistics
-	- notes
+	- learning
 comments: true
 ---
 
