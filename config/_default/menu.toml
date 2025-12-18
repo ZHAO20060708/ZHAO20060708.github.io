@@ -38,11 +38,3 @@ url = "mailto:zhaojiale20060708@outlook.com"
 
 [social.params]
 icon = "brand-office"
-
-[[social]]
-identifier = "duolingo"
-name = "Duolingo"
-url = "https://www.duolingo.cn/profile/zzjjll678"
-
-[social.params]
-icon = "duolingo_logo_icon_248988"
