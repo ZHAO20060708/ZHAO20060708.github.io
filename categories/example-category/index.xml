@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Example Category on Eric's Blog</title><link>https://zhao20060708.github.io/categories/example-category/</link><description>Recent content in Example Category on Eric's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 05 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://zhao20060708.github.io/categories/example-category/index.xml" rel="self" type="application/rss+xml"/><item><title>Hello World</title><link>https://zhao20060708.github.io/p/hello-world/</link><pubDate>Tue, 05 Nov 2024 00:00:00 +0000</pubDate><guid>https://zhao20060708.github.io/p/hello-world/</guid><description>&lt;img src="https://zhao20060708.github.io/p/hello-world/cover.jpg" alt="Featured image of post Hello World" /&gt;&lt;h2 id="呐"&gt;&lt;del&gt;呐&amp;hellip;&amp;hellip;不知道说什么好呢&lt;/del&gt;
+&lt;/h2&gt;&lt;p&gt;这里是Eric Zhao，一个平平无奇的双学位大学生，目前就读于长春某985院校（&lt;del&gt;长春好像就一个985&lt;/del&gt;），随缘更新编程、数学相关内容（以及商学与管理学）&lt;/p&gt;
+&lt;h2 id="注意"&gt;注意
+&lt;/h2&gt;&lt;p&gt;文章中的应用和代码如果不另外说明均在&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://endeavouros.com" target="_blank" rel="noopener"
+&gt;&lt;img src="https://zhao20060708.github.io/p/hello-world/w.webp"
+width="690"
+height="184"
+srcset="https://zhao20060708.github.io/p/hello-world/w_hu_be6be27dbd6a6a55.webp 480w, https://zhao20060708.github.io/p/hello-world/w_hu_447b574f4b21ed2f.webp 1024w"
+loading="lazy"
+alt="EndeavourOS"
+class="gallery-image"
+data-flex-grow="375"
+data-flex-basis="900px"
+&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;平台上运行（基于archlinux）&lt;/p&gt;
+&lt;p&gt;Want a site like this? Check out &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack-starter" target="_blank" rel="noopener"
+&gt;hugo-theme-stack-stater&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+&gt;Pawel Czerwinski&lt;/a&gt; on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+&gt;Unsplash&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</description></item></channel></rss>
