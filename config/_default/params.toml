@@ -2,7 +2,6 @@
 mainSections = ["post"]
 # Output page's full content in RSS.
 rssFullContent = true
-favicon = "/favicon.png"
 
 [footer]
 since = 2024
@@ -15,11 +14,7 @@ lastUpdated = "2006, Jan 02, 15:04 CST"
 [sidebar]
 emoji = "😋"
 subtitle = "热爱生活"
-
-[sidebar.avatar]
-enabled = true
-local = true
-src = "img/avatar.png"
+avatar = "img/avatar.png"
 
 [article]
 headingAnchor = false
