@@ -1,3 +1,63 @@
 /*
-    You can add your own custom styles here.
+    Custom styles for multi-language font support
 */
+
+/* Improve font rendering for all languages */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ensure consistent line height for CJK languages */
+html[lang^="zh"], html[lang="ja"], html[lang="ko"] {
+  line-height: 1.8;
+}
+
+/* Line height for Latin-based languages */
+html[lang="en"], html[lang="fr"], html[lang="de"], html[lang="es"],
+html[lang="it"], html[lang="pt-br"], html[lang="nl"], html[lang="id"] {
+  line-height: 1.6;
+}
+
+/* Line height for Arabic */
+html[lang="ar"] {
+  line-height: 1.9;
+}
+
+/* Line height for Thai */
+html[lang="th"] {
+  line-height: 1.8;
+}
+
+/* Line height for Greek and Ukrainian */
+html[lang="el"], html[lang="uk"] {
+  line-height: 1.65;
+}
+
+/* Better spacing for CJK characters in headings */
+html[lang^="zh"] h1, html[lang^="zh"] h2, html[lang^="zh"] h3,
+html[lang="ja"] h1, html[lang="ja"] h2, html[lang="ja"] h3,
+html[lang="ko"] h1, html[lang="ko"] h2, html[lang="ko"] h3 {
+  letter-spacing: 0.05em;
+}
+
+/* RTL support for Arabic */
+html[lang="ar"] {
+  direction: rtl;
+}
+
+html[lang="ar"] article {
+  text-align: right;
+}
+
+/* Code blocks - ensure monospace font applies correctly */
+pre code {
+  font-family: var(--mono-font-family) !important;
+}
+
+/* Inline code styling */
+code {
+  font-family: var(--mono-font-family) !important;
+  font-size: 0.9em;
+}

@@ -147,3 +147,17 @@ clientSecret = ""
 [comments.cusdis]
 host = ""
 id = ""
+
+## Auto-Translate Configuration
+# Automatic translation feature powered by translate.js
+# See AUTO_TRANSLATE_CONFIG.md for detailed instructions
+[autoTranslate]
+enable = false  # Set to true to enable auto-translate feature
+service = "client.edge"  # Options: "client.edge" (free, 2M chars/day) or "translate.service"
+languages = []  # Empty array = all languages available, or specify: ["english", "french", "spanish"]
+ignoreID = []  # Element IDs to ignore during translation
+ignoreClass = []  # CSS classes to ignore during translation
+ignoreTag = []  # HTML tags to ignore during translation (e.g., ["code", "pre"])
+detectLocalLanguage = false  # Auto-detect user's browser language
+cdn = "https://cdn.jsdelivr.net/npm/i18n-jsautotranslate@latest"  # CDN URL for translate.js library
+enterprise = false  # Enable enterprise translation channel (requires paid subscription)

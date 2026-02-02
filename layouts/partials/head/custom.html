@@ -1,36 +1,101 @@
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Math Font</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/fonts/HTML-CSS/STIX-Web/font/STIXTwoMath-Regular.woff2">
-  <style>
-    :root {
-      --base-font-family: 'Source Serif 4', serif;
-      --mono-font-family: 'Source Code Pro', monospace;
-      --article-font-family: var(--base-font-family), 'Noto Serif SC';
-      --math-font-family: 'STIX Two Math', serif; /* 添加数学字体 */
-    }
+<!-- Multi-language Font Configuration for All Supported Languages -->
+<style>
+  :root {
+    /* Base fonts for all languages */
+    --base-font-family: 'Source Serif 4', 'Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Sans Arabic', 'Noto Sans Thai', serif;
+    --mono-font-family: 'Source Code Pro', 'Noto Sans Mono', monospace;
+    --math-font-family: 'STIX Two Math', 'Latin Modern Math', serif;
+  }
 
-    body {
-      font-family: var(--base-font-family);
-    }
+  /* Font configuration for Latin-based languages (en, fr, de, es, it, pt-br, nl, id) */
+  html[lang="en"], html[lang="fr"], html[lang="de"], html[lang="es"], 
+  html[lang="it"], html[lang="pt-br"], html[lang="nl"], html[lang="id"] {
+    --article-font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  }
 
-    pre, code, tr {
-      font-family: var(--mono-font-family) !important;
-    }
+  /* Font configuration for Simplified Chinese (zh-cn) */
+  html[lang="zh-cn"], html[lang="zh-Hans"], html[lang="zh"] {
+    --article-font-family: 'Noto Serif SC', 'Source Serif 4', 'Songti SC', 'SimSun', serif;
+  }
 
-    .math {
-      font-family: var(--math-font-family); /* 应用数学字体 */
-    }
-  </style>
+  /* Font configuration for Traditional Chinese (zh-tw) */
+  html[lang="zh-tw"], html[lang="zh-Hant"] {
+    --article-font-family: 'Noto Serif TC', 'Source Serif 4', 'Songti TC', 'PMingLiU', serif;
+  }
+
+  /* Font configuration for Japanese (ja) */
+  html[lang="ja"] {
+    --article-font-family: 'Noto Serif JP', 'Source Serif 4', 'Yu Mincho', 'MS Mincho', serif;
+  }
+
+  /* Font configuration for Korean (ko) */
+  html[lang="ko"] {
+    --article-font-family: 'Noto Serif KR', 'Source Serif 4', 'Batang', serif;
+  }
+
+  /* Font configuration for Arabic (ar) */
+  html[lang="ar"] {
+    --article-font-family: 'Noto Sans Arabic', 'Noto Naskh Arabic', 'Traditional Arabic', 'Arabic Typesetting', serif;
+  }
+
+  /* Font configuration for Thai (th) */
+  html[lang="th"] {
+    --article-font-family: 'Noto Sans Thai', 'Noto Serif Thai', 'Leelawadee UI', serif;
+  }
+
+  /* Font configuration for Greek (el) */
+  html[lang="el"] {
+    --article-font-family: 'Source Serif 4', 'Noto Serif', 'Times New Roman', serif;
+  }
+
+  /* Font configuration for Ukrainian (uk) */
+  html[lang="uk"] {
+    --article-font-family: 'Source Serif 4', 'Noto Serif', 'Times New Roman', serif;
+  }
+
+  /* Font configuration for Indonesian (id) */
+  html[lang="id"] {
+    --article-font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  }
+
+  body {
+    font-family: var(--base-font-family);
+  }
+
+  article {
+    font-family: var(--article-font-family);
+  }
+
+  pre, code, tr {
+    font-family: var(--mono-font-family) !important;
+  }
+
+  .math, .katex {
+    font-family: var(--math-font-family);
+  }
+</style>
 
 <script>
   (function () {
+    // Load fonts from Google Fonts (with CN mirror fallback for Chinese users)
     const customFonts = [
-      "https://fonts.googleapis.cn/css2?family=Source+Serif+4:wght@400;700&display=swap",
-      "https://fonts.googleapis.cn/css2?family=Noto+Serif+SC:wght@400;700&display=swap",
-      "https://fonts.googleapis.cn/css2?family=Source+Code+Pro:wght@400;700&display=swap"
+      // Latin fonts
+      "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      // CJK fonts
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&display=swap",
+      // Arabic fonts
+      "https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;700&display=swap",
+      // Thai fonts
+      "https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap",
+      "https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@400;500;700&display=swap",
+      // Monospace
+      "https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&display=swap"
     ];
 
     customFonts.forEach(font => {
