@@ -174,7 +174,10 @@ if (langParam) {
   document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       translatePage(langParam);
-      document.getElementById('translate-language-select').value = langParam;
+      const selectElement = document.getElementById('translate-language-select');
+      if (selectElement) {
+        selectElement.value = langParam;
+      }
     }, 500);
   });
 }
