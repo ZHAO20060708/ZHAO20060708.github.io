@@ -23,15 +23,15 @@ The blog runs on EndeavourOS (Arch Linux-based) and content is updated on a rand
 
 This blog is built using:
 - **Hugo** - Static site generator
-- **Hugo Theme Stack v3** - A beautiful and feature-rich Hugo theme
+- **Hugo Theme Stack v4** - A beautiful and feature-rich Hugo theme
 - **GitHub Pages** - Hosting platform
 - **GitHub Actions** - Automated deployment and theme updates
 
 ### Automatic Deployment
 
 The site automatically deploys to GitHub Pages when changes are pushed to the `master` branch. The deployment workflow:
-1. Builds the site using Hugo
-2. Deploys to the `gh-pages` branch
+1. Builds the site using Hugo with optimized caching
+2. Deploys directly to GitHub Pages using the native deployment action
 3. Updates are live within minutes
 
 ### Automatic Theme Updates
@@ -69,11 +69,11 @@ If you want to run this blog locally for development:
 To manually update the Hugo theme:
 
 ```bash
-hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v3
+hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v4
 hugo mod tidy
 ```
 
-> **Note**: This starter template is configured with `v3` of the theme. When `v4` or later versions are released, the `config/module.toml` file will need manual updates due to Go module limitations.
+> **Note**: This site is now configured with `v4` of the theme. The theme is automatically updated daily via GitHub Actions to ensure the latest features and security updates.
 
 ## Contributing
 
