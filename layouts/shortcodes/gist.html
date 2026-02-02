@@ -1,0 +1,5 @@
+{{- $url := printf "https://gist.github.com/%s/%s.js" (.Get 0 | safeURL) (.Get 1 | safeURL) }}
+{{- if gt (len .Params) 2 }}
+  {{- $url = printf "%s?file=%s" $url (.Get 2 | safeURL) }}
+{{- end }}
+<script src="{{ $url }}"></script>
