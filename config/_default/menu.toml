@@ -1,11 +1,7 @@
 # Configure main menu and social menu
-#[[main]]
-#identifier = "home"
-#name = "Home"
-#url = "/"
-#[main.params]
-#icon = "home"
-#newtab = true
+
+# Main menu entries - commented out since we define them per-language in content files
+# The menu structure is managed through content/[lang]/_index.md and content/[lang]/page/* files
 
 [[social]]
 identifier = "github"
