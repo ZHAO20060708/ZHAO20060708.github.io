@@ -1,11 +1,111 @@
+# English
 [en]
 languageName = "English"
 languagedirection = "ltr"
 title = "Eric's Blog"
 weight = 1
 
+# 简体中文 (Simplified Chinese)
 [zh-cn]
 languageName = "简体中文"
 languagedirection = "ltr"
 title = "Eric的博客"
 weight = 2
+
+# 繁體中文 (Traditional Chinese - Taiwan)
+[zh-tw]
+languageName = "繁體中文"
+languagedirection = "ltr"
+title = "Eric的博客"
+weight = 3
+
+# 日本語 (Japanese)
+[ja]
+languageName = "日本語"
+languagedirection = "ltr"
+title = "Eric's Blog"
+weight = 4
+
+# 한국어 (Korean)
+[ko]
+languageName = "한국어"
+languagedirection = "ltr"
+title = "Eric's Blog"
+weight = 5
+
+# Français (French)
+[fr]
+languageName = "Français"
+languagedirection = "ltr"
+title = "Le blog d'Eric"
+weight = 6
+
+# Deutsch (German)
+[de]
+languageName = "Deutsch"
+languagedirection = "ltr"
+title = "Erics Blog"
+weight = 7
+
+# Español (Spanish)
+[es]
+languageName = "Español"
+languagedirection = "ltr"
+title = "Blog de Eric"
+weight = 8
+
+# Italiano (Italian)
+[it]
+languageName = "Italiano"
+languagedirection = "ltr"
+title = "Il blog di Eric"
+weight = 9
+
+# Português (Portuguese - Brazil)
+[pt-br]
+languageName = "Português (Brasil)"
+languagedirection = "ltr"
+title = "Blog do Eric"
+weight = 10
+
+# Nederlands (Dutch)
+[nl]
+languageName = "Nederlands"
+languagedirection = "ltr"
+title = "Eric's Blog"
+weight = 11
+
+# ไทย (Thai)
+[th]
+languageName = "ไทย"
+languagedirection = "ltr"
+title = "บล็อกของ Eric"
+weight = 12
+
+# Ελληνικά (Greek)
+[el]
+languageName = "Ελληνικά"
+languagedirection = "ltr"
+title = "Το blog του Eric"
+weight = 13
+
+# Українська (Ukrainian)
+[uk]
+languageName = "Українська"
+languagedirection = "ltr"
+title = "Блог Еріка"
+weight = 14
+
+# العربية (Arabic)
+[ar]
+languageName = "العربية"
+languagedirection = "rtl"
+title = "مدونة إريك"
+weight = 15
+
+# Bahasa Indonesia (Indonesian)
+[id]
+languageName = "Bahasa Indonesia"
+languagedirection = "ltr"
+title = "Blog Eric"
+weight = 16
