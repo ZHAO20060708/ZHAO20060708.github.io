@@ -3,237 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZHAO's Portfolio</title>
-    <meta name="description" content="ZHAO的个人主页与项目展示">
+    <title>ZHAO's Workspace</title>
+    <meta name="description" content="ZHAO的个人主页与工具集">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
-            --accent-hover: #60a5fa;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --glow: rgba(59, 130, 246, 0.4);
+            --bg-base: #FAFAFA;
+            --bg-surface: #FFFFFF;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --accent: #FF3366; /* Vibrant magenta-red, representing a "hit" or "perfect" in rhythm games */
+            --grid-color: rgba(0, 0, 0, 0.03);
+            --line-color: rgba(0, 0, 0, 0.1);
         }
 
         body {
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            background: radial-gradient(circle at 15% 50%, rgba(30, 58, 138, 0.4), transparent 50%),
-                        radial-gradient(circle at 85% 30%, rgba(88, 28, 135, 0.3), transparent 50%),
-                        #0f172a;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 90%;
-            padding: 40px 20px;
-            z-index: 10;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 70px;
-            animation: fadeInDown 1s ease-out forwards;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #60a5fa, #c084fc, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
-
-        p.subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 550px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            animation: fadeInUp 1s ease-out 0.3s forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 30px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
+            /* Engineering/precision grid background */
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
             display: flex;
-            flex-direction: column;
             justify-content: center;
         }
 
-        .project-card::before {
+        .layout-wrapper {
+            width: 100%;
+            max-width: 800px;
+            padding: 100px 20px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* The Timeline / Ruler */
+        .layout-wrapper::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            top: 0;
+            bottom: 0;
+            left: 40px;
+            width: 1px;
+            background-color: var(--line-color);
             z-index: 0;
         }
 
-        .project-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(96, 165, 250, 0.4);
-            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6), 0 0 25px -5px var(--glow);
-        }
-
-        .project-card:hover::before {
-            opacity: 1;
-        }
-
-        .project-content {
+        header, main, footer {
+            padding-left: 60px; /* Offset from timeline */
             position: relative;
             z-index: 1;
         }
 
-        .project-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 12px;
+        header {
+            margin-bottom: 80px;
+            animation: fade-in 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin: 0 0 24px 0;
+            color: var(--text-primary);
+            position: relative;
             display: flex;
             align-items: center;
+        }
+
+        /* Signature Accent Dot - The Rhythm Game "Hit Circle" */
+        h1::after {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            margin-left: 16px;
+            animation: pulse 2s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        p.subtitle {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0;
+        }
+
+        .section-marker {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        /* Line connecting the section to the timeline */
+        .section-marker::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 1px;
+            background-color: var(--line-color);
+            margin-right: 15px;
+            margin-left: -40px; /* Pull back to touch timeline (60px padding - 40px = 20px offset, which perfectly touches the timeline at left: 40px relative to wrapper) */
+        }
+
+        .projects {
+            animation: fade-in 0.8s ease-out 0.2s both;
+        }
+
+        .project-item {
+            display: block;
+            text-decoration: none;
+            background: var(--bg-surface);
+            border: 1px solid rgba(0,0,0,0.06);
+            padding: 35px 40px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            /* Give it a slight technical "card" feel without being rounded */
+            border-radius: 2px;
+        }
+
+        /* Left border accent line on hover */
+        .project-item::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            bottom: -1px;
+            width: 3px;
+            background-color: var(--accent);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .project-item:hover {
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .project-item:hover::before {
+            transform: scaleY(1);
+            transform-origin: top;
+        }
+
+        .project-header {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
-        .project-title svg {
-            width: 24px;
-            height: 24px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            opacity: 0;
-            transform: translateX(-15px);
-            transition: all 0.4s ease;
-            color: var(--accent-hover);
+        .project-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            transition: color 0.2s ease;
         }
 
-        .project-card:hover .project-title svg {
-            opacity: 1;
-            transform: translateX(0);
+        .project-item:hover .project-title {
+            color: var(--accent);
+        }
+
+        .project-meta {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-base);
+            padding: 4px 8px;
+            border-radius: 2px;
+            letter-spacing: 0.05em;
         }
 
         .project-desc {
-            font-size: 1.05rem;
-            color: var(--text-muted);
+            font-size: 1rem;
+            color: var(--text-secondary);
             line-height: 1.6;
+            margin: 0;
         }
 
         footer {
             margin-top: 100px;
-            text-align: center;
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            animation: fadeIn 1s ease-out 0.6s forwards;
-            opacity: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+            animation: fade-in 0.8s ease-out 0.4s both;
+            display: flex;
+            align-items: center;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
+        footer::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 1px;
+            background-color: var(--line-color);
+            margin-right: 15px;
+            margin-left: -30px;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 51, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
 
-        /* Abstract Background Shapes */
-        .shape {
-            position: absolute;
-            filter: blur(100px);
-            z-index: 0;
-            opacity: 0.4;
-            animation: float 25s infinite alternate ease-in-out;
-            pointer-events: none;
-        }
-        .shape-1 {
-            width: 350px; height: 350px;
-            background: #3b82f6;
-            top: -50px; left: -100px;
-            border-radius: 50%;
-        }
-        .shape-2 {
-            width: 450px; height: 450px;
-            background: #a855f7;
-            bottom: -150px; right: -150px;
-            border-radius: 50%;
-            animation-delay: -5s;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
+            .layout-wrapper::before { left: 20px; }
+            header, main, footer { padding-left: 40px; }
+            .section-marker::before { margin-left: -30px; width: 15px; }
+            footer::before { margin-left: -20px; width: 5px; }
             h1 { font-size: 2.8rem; }
-            .projects { grid-template-columns: 1fr; }
-            .project-card { padding: 25px; }
+            .project-item { padding: 25px 20px; }
+            .project-header { flex-direction: column; align-items: flex-start; gap: 8px; }
         }
     </style>
 </head>
 <body>
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    
-    <div class="container">
+    <div class="layout-wrapper">
         <header>
             <h1>Hi, I'm ZHAO.</h1>
-            <p class="subtitle">欢迎来到我的主页。这里存放着我开发的一些实用小工具和个人项目。</p>
+            <p class="subtitle">欢迎来到我的工作区。这里存放着我开发的一些追求精密与体验的实用工具和个人项目。</p>
         </header>
 
-        <main class="projects">
-            <a href="./malody2osu/" class="project-card">
-                <div class="project-content">
-                    <div class="project-title">
-                        Malody to osu! Converter
-                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </div>
-                    <div class="project-desc">一个无需安装、纯浏览器本地运行的格式转换工具，支持批量多选处理。</div>
-                </div>
-            </a>
+        <main>
+            <div class="section-marker">Tools & Projects</div>
             
-            <!-- 未来如果有更多项目，可以继续添加到这里 -->
+            <div class="projects">
+                <a href="./malody2osu/" class="project-item">
+                    <div class="project-header">
+                        <h2 class="project-title">Malody to osu!</h2>
+                        <span class="project-meta">Converter</span>
+                    </div>
+                    <p class="project-desc">一个无需安装、纯浏览器本地运行的格式转换工具，支持批量多选处理。</p>
+                </a>
+                
+                <!-- Future projects can be added here -->
+            </div>
         </main>
 
         <footer>
-            &copy; 2026 ZHAO. 
+            &copy; 2026 ZHAO. Engineered with precision.
         </footer>
     </div>
 </body>
