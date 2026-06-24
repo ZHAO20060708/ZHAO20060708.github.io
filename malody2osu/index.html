@@ -6,114 +6,181 @@
     <title>Malody to osu!mania Converter</title>
     <!-- 引入 Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
     <style>
         :root {
-            /* MD3 Dark Theme - Custom Pink/Violet Palette */
-            --md-sys-color-background: #141218;
-            --md-sys-color-on-background: #E6E0E9;
-            --md-sys-color-surface: #141218;
-            --md-sys-color-surface-container: #211F26;
-            --md-sys-color-surface-container-high: #2B2930;
-            --md-sys-color-primary: #FFB1C8; 
-            --md-sys-color-on-primary: #650033;
-            --md-sys-color-primary-container: #8E004A;
-            --md-sys-color-on-primary-container: #FFD9E2;
-            --md-sys-color-secondary: #C0C1A9; 
-            --md-sys-color-error: #FFB4AB;
-            --md-sys-color-on-error: #690005;
-            --md-sys-color-success: #81C784;
-            
-            --md-sys-shape-corner-extra-large: 28px;
-            --md-sys-shape-corner-large: 16px;
-            --md-sys-shape-corner-medium: 12px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --bg-base: #FAFAFA;
+            --bg-surface: #FFFFFF;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --accent: #FF3366; 
+            --grid-color: rgba(0, 0, 0, 0.03);
+            --line-color: rgba(0, 0, 0, 0.1);
+            --input-border: #DDDDDD;
+            --success: #10B981;
+            --error: #EF4444;
+            --surface-hover: rgba(255, 51, 102, 0.04);
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--md-sys-color-background);
-            color: var(--md-sys-color-on-background);
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
             min-height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 24px;
         }
 
-        .app-container {
+        .layout-wrapper {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
+            padding: 100px 20px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .layout-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 40px;
+            width: 1px;
+            background-color: var(--line-color);
+            z-index: 0;
+        }
+
+        header, main, footer {
+            padding-left: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            margin-bottom: 60px;
+            animation: fade-in 0.8s ease-out;
+            position: relative;
+        }
+
+        .top-bar {
             display: flex;
-            flex-direction: column;
-            gap: 32px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
         }
 
-        .header {
-            text-align: center;
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            font-family: 'Space Grotesk', sans-serif;
         }
 
-        .header h1 {
-            font-size: 36px;
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--input-border);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
             font-weight: 700;
-            color: var(--md-sys-color-primary);
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
+            letter-spacing: -0.04em;
+            margin: 0 0 16px 0;
+            color: var(--text-primary);
         }
 
-        .header p {
-            font-size: 16px;
-            color: var(--md-sys-color-on-background);
-            opacity: 0.8;
-            line-height: 1.5;
+        p.subtitle {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0;
         }
 
-        .card {
-            background-color: var(--md-sys-color-surface-container);
-            border-radius: var(--md-sys-shape-corner-extra-large);
-            padding: 32px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        main {
+            animation: fade-in 0.8s ease-out 0.2s both;
+        }
+
+        .converter-card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(0,0,0,0.06);
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .converter-card::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            bottom: -1px;
+            width: 3px;
+            background-color: var(--accent);
         }
 
         .upload-area {
-            border: 2px dashed rgba(255, 177, 200, 0.3);
-            border-radius: var(--md-sys-shape-corner-large);
+            border: 2px dashed var(--input-border);
+            border-radius: 4px;
             padding: 48px 24px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
-            background-color: var(--md-sys-color-surface-container-high);
+            transition: all 0.3s ease;
+            background-color: var(--bg-base);
         }
 
         .upload-area:hover, .upload-area.dragover {
-            background-color: rgba(255, 177, 200, 0.08);
-            border-color: var(--md-sys-color-primary);
-            transform: translateY(-2px);
+            background-color: var(--surface-hover);
+            border-color: var(--accent);
         }
 
         .upload-icon {
             font-size: 48px;
-            color: var(--md-sys-color-primary);
+            color: var(--accent);
             margin-bottom: 16px;
         }
 
         .upload-text {
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: 500;
-            color: var(--md-sys-color-on-background);
+            color: var(--text-primary);
             margin-bottom: 8px;
+            font-family: 'Space Grotesk', sans-serif;
         }
 
         .upload-subtext {
-            font-size: 14px;
-            color: var(--md-sys-color-on-background);
-            opacity: 0.6;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
         input[type="file"] {
@@ -130,22 +197,10 @@
             padding-right: 8px;
         }
 
-        .file-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .file-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .file-list::-webkit-scrollbar-thumb {
-            background: var(--md-sys-color-surface-container-high);
-            border-radius: 4px;
-        }
-
         .file-item {
-            background-color: var(--md-sys-color-surface-container-high);
-            border-radius: var(--md-sys-shape-corner-medium);
+            background-color: var(--bg-base);
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
             padding: 16px;
             display: flex;
             align-items: center;
@@ -159,7 +214,7 @@
         }
 
         .file-icon {
-            color: var(--md-sys-color-secondary);
+            color: var(--text-secondary);
             font-size: 28px;
         }
 
@@ -169,17 +224,18 @@
         }
 
         .file-name {
-            font-size: 15px;
+            font-size: 0.95rem;
             font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             margin-bottom: 4px;
+            color: var(--text-primary);
         }
 
         .file-status-text {
-            font-size: 13px;
-            opacity: 0.7;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
         }
 
         .status-icon-container {
@@ -194,14 +250,14 @@
             font-size: 24px;
         }
 
-        .status-icon.success { color: var(--md-sys-color-success); }
-        .status-icon.error { color: var(--md-sys-color-error); }
+        .status-icon.success { color: var(--success); }
+        .status-icon.error { color: var(--error); }
         
         .loader {
             width: 24px;
             height: 24px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: var(--md-sys-color-primary);
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -230,38 +286,80 @@
         }
 
         #initStatus > div:last-child {
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
-            color: var(--md-sys-color-on-background);
-            opacity: 0.8;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        footer {
+            margin-top: 80px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+            animation: fade-in 0.8s ease-out 0.4s both;
+            display: flex;
+            align-items: center;
+        }
+
+        footer::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 1px;
+            background-color: var(--line-color);
+            margin-right: 15px;
+            margin-left: -30px;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .layout-wrapper::before { left: 20px; }
+            header, main, footer { padding-left: 40px; }
+            h1 { font-size: 2.2rem; }
+            .converter-card { padding: 24px; }
+            footer::before { margin-left: -20px; width: 5px; }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="header">
+    <div class="layout-wrapper">
+        <header>
+            <div class="top-bar">
+                <a href="../" class="back-link" id="text-back">← 返回工作区</a>
+                <button class="lang-btn" id="lang-btn" onclick="toggleLang()">English</button>
+            </div>
             <h1>Malody to osu!</h1>
-            <p>无需安装，完全在浏览器本地运行，支持手机与电脑</p>
-        </div>
+            <p class="subtitle" id="text-subtitle">无需安装，完全在浏览器本地运行，支持手机与电脑</p>
+        </header>
 
-        <div class="card">
-            <div id="initStatus">
-                <div class="loader"></div>
-                <div>正在初始化 Python 环境 (约需几秒钟)...</div>
-            </div>
-
-            <div id="uploadContainer" class="hidden">
-                <div id="uploadArea" class="upload-area">
-                    <span class="material-symbols-rounded upload-icon">upload_file</span>
-                    <div class="upload-text">点击选择 .mcz 文件，或将文件拖拽至此处</div>
-                    <div class="upload-subtext">支持同时上传多个文件</div>
-                    <!-- 移除了 accept 属性以兼容手机端多选 -->
-                    <input type="file" id="fileInput" multiple>
+        <main>
+            <div class="converter-card">
+                <div id="initStatus">
+                    <div class="loader"></div>
+                    <div id="initText">正在初始化 Python 环境 (约需几秒钟)...</div>
                 </div>
-                
-                <div id="fileList" class="file-list"></div>
+
+                <div id="uploadContainer" class="hidden">
+                    <div id="uploadArea" class="upload-area">
+                        <span class="material-symbols-rounded upload-icon">upload_file</span>
+                        <div class="upload-text" id="text-upload-title">点击选择 .mcz 文件，或将文件拖拽至此处</div>
+                        <div class="upload-subtext" id="text-upload-sub">支持同时上传多个文件</div>
+                        <input type="file" id="fileInput" multiple>
+                    </div>
+                    
+                    <div id="fileList" class="file-list"></div>
+                </div>
             </div>
-        </div>
+        </main>
+
+        <footer>
+            &copy; 2026 ZHAO. Engineered with precision.
+        </footer>
     </div>
 
     <!-- 内嵌 Python 核心转换逻辑 -->
@@ -272,7 +370,6 @@ import zipfile
 import shutil
 
 def convert(i, bgtmp, soundtmp):
-    # 此处为精简版原核心转换逻辑
     try:
         with open(i, encoding='utf-8') as mc:
             mcFile = json.loads(mc.read())
@@ -367,7 +464,6 @@ def convert(i, bgtmp, soundtmp):
 def process_file_bytes(file_bytes, original_filename):
     import io, traceback
     try:
-        # 写入虚拟内存文件前，将可能的 JsProxy 转换为 bytes
         if hasattr(file_bytes, 'to_py'):
             file_bytes = bytes(file_bytes.to_py())
         else:
@@ -385,7 +481,6 @@ def process_file_bytes(file_bytes, original_filename):
         extract_dir = os.path.join(work_dir, 'extracted')
         os.makedirs(extract_dir)
         
-        # 解压并修复日文乱码
         with zipfile.ZipFile(zip_path, 'r') as mcz:
             for zipinfo in mcz.infolist():
                 if zipinfo.flag_bits & 0x800 == 0:
@@ -399,7 +494,6 @@ def process_file_bytes(file_bytes, original_filename):
                     except: pass
                 mcz.extract(zipinfo, extract_dir)
                 
-        # 转换
         bgtmp = []
         soundtmp = []
         mc_files = []
@@ -419,7 +513,6 @@ def process_file_bytes(file_bytes, original_filename):
         if not mc_files:
             return "ERROR", "压缩包内没有找到支持的 .mc 谱面文件", b""
             
-        # 打包为 osz
         osz_name = f"{mcartist} - {mctitle}.osz"
         osz_path = os.path.join(work_dir, osz_name)
         
@@ -432,7 +525,6 @@ def process_file_bytes(file_bytes, original_filename):
             for snd in set(soundtmp):
                 if os.path.exists(snd): osz.write(snd, os.path.basename(snd))
                 
-        # 读取返回
         with open(osz_path, 'rb') as f:
             final_bytes = f.read()
             
@@ -442,11 +534,78 @@ def process_file_bytes(file_bytes, original_filename):
     </script>
 
     <script>
+        const i18n = {
+            'en': {
+                back: '← Back to Workspace',
+                subtitle: 'No installation required, completely runs locally in browser. Supports mobile and PC.',
+                initWait: 'Initializing Python Environment (takes a few seconds)...',
+                initFail: 'Environment initialization failed. Please refresh and try again.',
+                uploadTitle: 'Click to select .mcz files, or drag & drop here',
+                uploadSub: 'Supports multiple file upload at once',
+                unsupportedFiles: (n) => `${n} unsupported files filtered. Please upload .mcz or .zip files only.`,
+                waitProcess: 'Waiting to process...',
+                processing: 'Converting...',
+                fail: 'Conversion failed',
+                success: 'Conversion successful! Download starting.',
+                langToggle: '中文'
+            },
+            'zh': {
+                back: '← 返回工作区',
+                subtitle: '无需安装，完全在浏览器本地运行，支持手机与电脑',
+                initWait: '正在初始化 Python 环境 (约需几秒钟)...',
+                initFail: '环境初始化失败，请刷新重试',
+                uploadTitle: '点击选择 .mcz 文件，或将文件拖拽至此处',
+                uploadSub: '支持同时上传多个文件',
+                unsupportedFiles: (n) => `有 ${n} 个文件格式不支持，已自动过滤。请仅上传 .mcz 或 .zip 文件。`,
+                waitProcess: '等待处理...',
+                processing: '正在转换...',
+                fail: '转换失败',
+                success: '转换成功！即将开始下载。',
+                langToggle: 'English'
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function toggleLang() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLang();
+        }
+
+        function updateLang() {
+            const texts = i18n[currentLang];
+            document.getElementById('text-back').innerText = texts.back;
+            document.getElementById('text-subtitle').innerText = texts.subtitle;
+            const initTextEl = document.getElementById('initText');
+            if (initTextEl) initTextEl.innerText = texts.initWait;
+            document.getElementById('text-upload-title').innerText = texts.uploadTitle;
+            document.getElementById('text-upload-sub').innerText = texts.uploadSub;
+            document.getElementById('lang-btn').innerText = texts.langToggle;
+            
+            document.querySelectorAll('.file-item').forEach(item => {
+                const id = item.id;
+                const statusTextEl = document.getElementById(`${id}-text`);
+                if (statusTextEl) {
+                    const status = statusTextEl.getAttribute('data-status');
+                    if (status === 'waiting') {
+                        statusTextEl.innerText = texts.waitProcess;
+                    } else if (status === 'processing') {
+                        statusTextEl.innerText = texts.processing;
+                    } else if (status === 'success') {
+                        statusTextEl.innerText = texts.success;
+                    } else if (status === 'fail') {
+                        statusTextEl.innerText = texts.fail;
+                    } else if (status && status.startsWith('error:')) {
+                        statusTextEl.innerText = (currentLang === 'zh' ? '错误: ' : 'Error: ') + status.substring(6);
+                    }
+                }
+            });
+        }
+
         let pyodide;
         let isProcessing = false;
         const fileQueue = [];
 
-        // 初始化 Pyodide
         async function init() {
             try {
                 pyodide = await loadPyodide();
@@ -454,9 +613,10 @@ def process_file_bytes(file_bytes, original_filename):
                 document.getElementById('initStatus').classList.add('hidden');
                 document.getElementById('uploadContainer').classList.remove('hidden');
             } catch (err) {
+                const texts = i18n[currentLang];
                 document.getElementById('initStatus').innerHTML = `
-                    <span class="material-symbols-rounded" style="color: var(--md-sys-color-error); font-size: 48px;">error</span>
-                    <div style="color: var(--md-sys-color-error);">环境初始化失败，请刷新重试</div>
+                    <span class="material-symbols-rounded" style="color: var(--error); font-size: 48px;">error</span>
+                    <div style="color: var(--error);">${texts.initFail}</div>
                 `;
                 console.error(err);
             }
@@ -483,7 +643,7 @@ def process_file_bytes(file_bytes, original_filename):
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length) {
                 handleFilesInput(e.target.files);
-                fileInput.value = ''; // Reset input so same files can be selected again
+                fileInput.value = ''; 
             }
         });
 
@@ -500,7 +660,7 @@ def process_file_bytes(file_bytes, original_filename):
             }
             
             if (invalidCount > 0) {
-                alert(`有 ${invalidCount} 个文件格式不支持，已自动过滤。请仅上传 .mcz 或 .zip 文件。`);
+                alert(i18n[currentLang].unsupportedFiles(invalidCount));
             }
             
             if (validFiles.length > 0) {
@@ -511,14 +671,14 @@ def process_file_bytes(file_bytes, original_filename):
         function enqueueFiles(files) {
             for (let file of files) {
                 const id = 'file-' + Math.random().toString(36).substr(2, 9);
+                const texts = i18n[currentLang];
                 
-                // Add to DOM
                 const itemHtml = `
                     <div class="file-item" id="${id}">
                         <span class="material-symbols-rounded file-icon">draft</span>
                         <div class="file-info">
                             <div class="file-name" title="${file.name}">${file.name}</div>
-                            <div class="file-status-text" id="${id}-text">等待处理...</div>
+                            <div class="file-status-text" id="${id}-text" data-status="waiting">${texts.waitProcess}</div>
                         </div>
                         <div class="status-icon-container" id="${id}-icon">
                             <span class="material-symbols-rounded status-icon" style="opacity: 0.5;">schedule</span>
@@ -527,7 +687,6 @@ def process_file_bytes(file_bytes, original_filename):
                 `;
                 fileList.insertAdjacentHTML('afterbegin', itemHtml);
                 
-                // Add to queue
                 fileQueue.push({ file, id });
             }
             processQueue();
@@ -545,14 +704,15 @@ def process_file_bytes(file_bytes, original_filename):
         }
 
         async function handleFile(file, id) {
+            const texts = i18n[currentLang];
             const statusText = document.getElementById(`${id}-text`);
             const statusIcon = document.getElementById(`${id}-icon`);
             
-            statusText.innerText = '正在转换...';
-            statusText.style.color = 'var(--md-sys-color-primary)';
+            statusText.setAttribute('data-status', 'processing');
+            statusText.innerText = texts.processing;
+            statusText.style.color = 'var(--accent)';
             statusIcon.innerHTML = `<div class="loader"></div>`;
 
-            // Give browser a moment to paint the UI updates before blocking Python runs
             await new Promise(resolve => setTimeout(resolve, 50));
 
             try {
@@ -566,9 +726,10 @@ def process_file_bytes(file_bytes, original_filename):
                 if (status === "ERROR") {
                     let errMsg = result.get(1);
                     console.error(errMsg);
-                    statusText.innerText = '转换失败';
-                    statusText.style.color = 'var(--md-sys-color-error)';
-                    statusIcon.innerHTML = `<span class="material-symbols-rounded status-icon error" title="请检查控制台了解详细错误信息">error</span>`;
+                    statusText.setAttribute('data-status', 'fail');
+                    statusText.innerText = texts.fail;
+                    statusText.style.color = 'var(--error)';
+                    statusIcon.innerHTML = `<span class="material-symbols-rounded status-icon error" title="Please check console for details">error</span>`;
                     return;
                 }
                 
@@ -586,13 +747,16 @@ def process_file_bytes(file_bytes, original_filename):
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 
-                statusText.innerText = '转换成功！即将开始下载。';
-                statusText.style.color = 'var(--md-sys-color-success)';
+                statusText.setAttribute('data-status', 'success');
+                statusText.innerText = texts.success;
+                statusText.style.color = 'var(--success)';
                 statusIcon.innerHTML = `<span class="material-symbols-rounded status-icon success">check_circle</span>`;
             } catch (err) {
                 console.error(err);
-                statusText.innerText = '错误: ' + (err.message || err);
-                statusText.style.color = 'var(--md-sys-color-error)';
+                const errMsg = err.message || err;
+                statusText.setAttribute('data-status', 'error:' + errMsg);
+                statusText.innerText = (currentLang === 'zh' ? '错误: ' : 'Error: ') + errMsg;
+                statusText.style.color = 'var(--error)';
                 statusIcon.innerHTML = `<span class="material-symbols-rounded status-icon error">error</span>`;
             }
         }

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>osu! Downloader - ZHAO's Workspace</title>
+    <meta name="description" content="A simple tool to download osu! beatmaps.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #FAFAFA;
+            --bg-surface: #FFFFFF;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --accent: #FF3366; 
+            --grid-color: rgba(0, 0, 0, 0.03);
+            --line-color: rgba(0, 0, 0, 0.1);
+            --input-border: #DDDDDD;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
+            display: flex;
+            justify-content: center;
+        }
+
+        .layout-wrapper {
+            width: 100%;
+            max-width: 800px;
+            padding: 100px 20px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .layout-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 40px;
+            width: 1px;
+            background-color: var(--line-color);
+            z-index: 0;
+        }
+
+        header, main, footer {
+            padding-left: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            margin-bottom: 60px;
+            animation: fade-in 0.8s ease-out;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--input-border);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin: 0 0 16px 0;
+            color: var(--text-primary);
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0;
+        }
+
+        main {
+            animation: fade-in 0.8s ease-out 0.2s both;
+        }
+
+        .downloader-card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(0,0,0,0.06);
+            padding: 40px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .downloader-card::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            bottom: -1px;
+            width: 3px;
+            background-color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            background: var(--bg-base);
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.1);
+            background: var(--bg-surface);
+        }
+
+        .download-btn {
+            background-color: var(--text-primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .download-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(255, 51, 102, 0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .mirror-selector {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mirror-selector select {
+            padding: 6px 12px;
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-surface);
+            outline: none;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: 80px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+            animation: fade-in 0.8s ease-out 0.4s both;
+            display: flex;
+            align-items: center;
+        }
+
+        footer::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 1px;
+            background-color: var(--line-color);
+            margin-right: 15px;
+            margin-left: -30px;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .layout-wrapper::before { left: 20px; }
+            header, main, footer { padding-left: 40px; }
+            h1 { font-size: 2.2rem; }
+            .downloader-card { padding: 24px; }
+            footer::before { margin-left: -20px; width: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-wrapper">
+        <header>
+            <div class="top-bar">
+                <a href="../" class="back-link" id="text-back">← 返回工作区</a>
+                <button class="lang-btn" id="lang-btn" onclick="toggleLang()">English</button>
+            </div>
+            <h1>osu! Downloader</h1>
+            <p class="subtitle" id="text-subtitle">快速通过镜像链接下载 osu! 谱面，粘贴链接或 ID 即可。</p>
+        </header>
+
+        <main>
+            <div class="downloader-card">
+                <div class="form-group">
+                    <label for="beatmap-input" id="text-label">谱面链接或 ID (Beatmapset)</label>
+                    <input type="text" id="beatmap-input" placeholder="例如 https://osu.ppy.sh/beatmapsets/123456 或 123456" autocomplete="off">
+                    <div class="error-message" id="error-msg"></div>
+                </div>
+
+                <button class="download-btn" id="download-btn" onclick="handleDownload()">下载谱面</button>
+
+                <div class="mirror-selector">
+                    <span id="text-mirror">下载镜像：</span>
+                    <select id="mirror-select">
+                        <option value="direct" id="text-mirror-1">osu.direct (首选)</option>
+                        <option value="catboy" id="text-mirror-2">catboy.best (备用)</option>
+                    </select>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            &copy; 2026 ZHAO. Engineered with precision.
+        </footer>
+    </div>
+
+    <script>
+        const i18n = {
+            'en': {
+                back: '← Back to Workspace',
+                subtitle: 'Quickly download osu! beatmapsets via mirror links. Just paste the URL or ID.',
+                label: 'Beatmapset URL or ID',
+                placeholder: 'e.g. https://osu.ppy.sh/beatmapsets/123456 or 123456',
+                btn: 'Download Beatmap',
+                mirror: 'Download Mirror:',
+                mirror1: 'osu.direct (Primary)',
+                mirror2: 'catboy.best (Fallback)',
+                errEmpty: 'Please enter a URL or ID.',
+                errFormat: 'Invalid input format. Cannot find beatmapset ID.',
+                langToggle: '中文'
+            },
+            'zh': {
+                back: '← 返回工作区',
+                subtitle: '快速通过镜像链接下载 osu! 谱面，粘贴链接或 ID 即可。',
+                label: '谱面链接或 ID (Beatmapset)',
+                placeholder: '例如 https://osu.ppy.sh/beatmapsets/123456 或 123456',
+                btn: '下载谱面',
+                mirror: '下载镜像：',
+                mirror1: 'osu.direct (首选)',
+                mirror2: 'catboy.best (备用)',
+                errEmpty: '请输入链接或 ID。',
+                errFormat: '输入格式无效，无法提取谱面 ID。',
+                langToggle: 'English'
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function toggleLang() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLang();
+            // Clear error message when switching languages to avoid untranslated lingering text
+            document.getElementById('error-msg').style.display = 'none';
+        }
+
+        function updateLang() {
+            const texts = i18n[currentLang];
+            document.getElementById('text-back').innerText = texts.back;
+            document.getElementById('text-subtitle').innerText = texts.subtitle;
+            document.getElementById('text-label').innerText = texts.label;
+            document.getElementById('beatmap-input').placeholder = texts.placeholder;
+            document.getElementById('download-btn').innerText = texts.btn;
+            document.getElementById('text-mirror').innerText = texts.mirror;
+            document.getElementById('text-mirror-1').innerText = texts.mirror1;
+            document.getElementById('text-mirror-2').innerText = texts.mirror2;
+            document.getElementById('lang-btn').innerText = texts.langToggle;
+        }
+
+        function handleDownload() {
+            const input = document.getElementById('beatmap-input').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+            const mirror = document.getElementById('mirror-select').value;
+            const texts = i18n[currentLang];
+            
+            errorMsg.style.display = 'none';
+
+            if (!input) {
+                errorMsg.innerText = texts.errEmpty;
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            // Extract set_id
+            let setId = '';
+            const match = input.match(/(?:beatmapsets\/|d\/|^)(\d+)/);
+            if (match) {
+                setId = match[1];
+            } else {
+                errorMsg.innerText = texts.errFormat;
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            let downloadUrl = '';
+            if (mirror === 'direct') {
+                downloadUrl = `https://osu.direct/api/d/${setId}`;
+            } else {
+                downloadUrl = `https://catboy.best/d/${setId}`;
+            }
+
+            // Trigger download by changing location
+            window.location.href = downloadUrl;
+        }
+
+        // Allow pressing Enter to trigger download
+        document.getElementById('beatmap-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleDownload();
+            }
+        });
+    </script>
+</body>
+</html>
