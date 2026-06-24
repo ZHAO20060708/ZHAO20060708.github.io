@@ -1,0 +1,167 @@
+---
+import { SITE_TITLE } from '../consts';
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header>
+	<div class="nav-container">
+		<a href="/" class="site-title">{SITE_TITLE}</a>
+		<nav class="nav-links">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+		</nav>
+		<button id="theme-btn" class="theme-btn" aria-label="Toggle theme">
+			<span class="theme-icon">◐</span>
+			<span class="theme-text">System</span>
+		</button>
+	</div>
+</header>
+<style>
+	header {
+		margin-bottom: 3rem;
+		animation: fade-in 0.8s ease-out;
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		padding: 1rem 0;
+		/* Glassmorphism effect */
+		background: rgba(var(--header-bg, 255, 255, 255), 0.7);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.05));
+	}
+	.nav-container {
+		width: 800px;
+		max-width: calc(100% - 2em);
+		margin: 0 auto;
+		padding: 0 1em;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+	.site-title {
+		display: inline-flex;
+		align-items: center;
+		text-decoration: none;
+		color: var(--text-main);
+		font-size: 1.5rem;
+		font-weight: 700;
+		font-family: 'Space Grotesk', sans-serif;
+		letter-spacing: -0.04em;
+	}
+	.site-title:hover {
+		color: var(--accent);
+	}
+	.theme-btn {
+		background: var(--bg-card);
+		border: 1px solid var(--border-color);
+		padding: 6px 12px;
+		border-radius: 8px;
+		cursor: pointer;
+		font-family: 'Inter', sans-serif;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+		transition: all 0.2s;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.theme-btn:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+		background: var(--bg-card-hover);
+		transform: translateY(-1px);
+	}
+	.theme-icon {
+		font-size: 1rem;
+	}
+	.nav-links {
+		display: flex;
+		gap: 1.5em;
+		align-items: center;
+	}
+	.nav-links :global(a) {
+		color: var(--text-muted);
+		text-decoration: none;
+		font-family: 'Space Grotesk', sans-serif;
+		font-weight: 500;
+		transition: all 0.2s;
+		padding: 0.2rem 0;
+		border-bottom: 2px solid transparent;
+	}
+	.nav-links :global(a:hover),
+	.nav-links :global(a.active) {
+		color: var(--accent);
+		border-bottom-color: var(--accent);
+	}
+
+	@media (max-width: 600px) {
+		.nav-container {
+			flex-direction: column;
+		}
+		.theme-btn {
+			position: absolute;
+			top: 1rem;
+			right: 0;
+		}
+	}
+
+	@keyframes fade-in {
+		from { opacity: 0; transform: translateY(-10px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+</style>
+
+<script>
+	// Define themes
+	const themes = ['system', 'light', 'dark'];
+	const icons = { 'system': '◐', 'light': '☼', 'dark': '☾' };
+	
+	// Setup button logic once DOM is loaded
+	document.addEventListener('DOMContentLoaded', () => {
+		const themeBtn = document.getElementById('theme-btn');
+		const themeText = themeBtn?.querySelector('.theme-text');
+		const themeIcon = themeBtn?.querySelector('.theme-icon');
+
+		let currentThemeIdx = 0;
+		
+		// Initialize from localStorage
+		const savedPreference = localStorage.getItem('theme-preference') || 'system';
+		currentThemeIdx = themes.indexOf(savedPreference);
+		if (currentThemeIdx === -1) currentThemeIdx = 0;
+		updateTheme(themes[currentThemeIdx]);
+
+		// Handle clicks
+		themeBtn?.addEventListener('click', () => {
+			currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+			updateTheme(themes[currentThemeIdx]);
+		});
+
+		function updateTheme(themeName) {
+			// Update UI
+			localStorage.setItem('theme-preference', themeName);
+			if (themeText) themeText.textContent = themeName.charAt(0).toUpperCase() + themeName.slice(1);
+			if (themeIcon) themeIcon.textContent = icons[themeName];
+
+			// Apply theme
+			if (themeName === 'system') {
+				const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+				localStorage.removeItem('theme'); // Remove strict theme so BaseHead uses system
+			} else {
+				document.documentElement.setAttribute('data-theme', themeName);
+				localStorage.setItem('theme', themeName); // Save strict theme for BaseHead
+			}
+		}
+
+		// Listen to system theme changes
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+			if (localStorage.getItem('theme-preference') === 'system') {
+				document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+			}
+		});
+	});
+</script>
