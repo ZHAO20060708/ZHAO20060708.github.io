@@ -16,95 +16,65 @@ const posts = (await getCollection('blog')).sort(
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			main {
-				width: 800px;
-			}
-			.blog-header {
-				margin-bottom: 3rem;
-			}
 			.blog-list {
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
 				display: flex;
 				flex-direction: column;
-				gap: 0.5rem;
-			}
-			.blog-item {
-				position: relative;
 			}
 			.blog-link {
-				display: flex;
-				align-items: baseline;
-				padding: 1.5rem 1rem;
-				border-radius: 8px;
+				display: block;
 				text-decoration: none;
-				transition: all 0.3s ease;
-				background: transparent;
-				border: 1px solid transparent;
 			}
-			.blog-link:hover {
-				background: var(--bg-card);
-				border-color: var(--border-color);
-				box-shadow: var(--box-shadow);
-				transform: translateX(10px);
+			.blog-link:hover .tool-card {
+				background: var(--surface-hover);
+				border-color: var(--accent);
 			}
 			.blog-date {
-				width: 140px;
-				flex-shrink: 0;
-				color: var(--text-muted);
+				color: var(--text-secondary);
 				font-size: 0.9rem;
-				letter-spacing: 0.5px;
+				margin-bottom: 0.5rem;
 			}
 			.blog-title {
 				margin: 0;
 				font-size: 1.5rem;
-				color: var(--text-main);
+				color: var(--text-primary);
 				transition: color 0.3s ease;
 			}
 			.blog-link:hover .blog-title {
 				color: var(--accent);
 			}
-			
-			@media (max-width: 720px) {
-				.blog-link {
-					flex-direction: column;
-					padding: 1rem;
-				}
-				.blog-link:hover {
-					transform: translateX(5px);
-				}
-				.blog-date {
-					margin-bottom: 0.5rem;
-				}
-			}
 		</style>
 	</head>
 	<body>
-		<div class="bg-orb"></div>
-		<Header />
-		<main>
-			<div class="blog-header">
-				<h1 style="font-size: 3em;">Transmission Log</h1>
-				<p class="font-mono" style="color: var(--text-muted);">> Index of thoughts and technical writings.</p>
-			</div>
-			<section>
-				<ul class="blog-list">
-					{
-						posts.map((post) => (
-							<li class="blog-item">
-								<a href={`/blog/${post.id}/`} class="blog-link">
-									<div class="blog-date font-mono">
-										[ <FormattedDate date={post.data.pubDate} /> ]
-									</div>
-									<h4 class="blog-title">{post.data.title}</h4>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
+		<div class="layout-wrapper">
+			<Header />
+			<main>
+				<div style="margin-bottom: 3rem;">
+					<h1>Transmission Log</h1>
+					<p>> Index of thoughts and technical writings.</p>
+				</div>
+				<section>
+					<ul class="blog-list">
+						{
+							posts.map((post) => (
+								<li>
+									<a href={`/blog/${post.id}/`} class="blog-link">
+										<div class="tool-card" style="padding: 24px;">
+											<div class="blog-date font-mono">
+												<FormattedDate date={post.data.pubDate} />
+											</div>
+											<h4 class="blog-title">{post.data.title}</h4>
+										</div>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</section>
+			</main>
+			<Footer />
+		</div>
 	</body>
 </html>

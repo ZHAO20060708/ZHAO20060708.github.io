@@ -18,6 +18,19 @@
             --grid-color: rgba(0, 0, 0, 0.03);
             --line-color: rgba(0, 0, 0, 0.1);
             --input-border: #DDDDDD;
+            --surface-hover: rgba(255, 51, 102, 0.04);
+        }
+
+        :root[data-theme="dark"] {
+            --bg-base: #0f111a;
+            --bg-surface: rgba(255, 255, 255, 0.03);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #8b5cf6; 
+            --grid-color: rgba(255, 255, 255, 0.05);
+            --line-color: rgba(255, 255, 255, 0.1);
+            --input-border: #333333;
+            --surface-hover: rgba(139, 92, 246, 0.06);
         }
 
         body {
@@ -99,6 +112,26 @@
         }
 
         .lang-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--input-border);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-btn:hover {
             border-color: var(--accent);
             color: var(--accent);
         }
@@ -268,7 +301,13 @@
         <header>
             <div class="top-bar">
                 <a href="../" class="back-link" id="text-back">← 返回工作区</a>
-                <button class="lang-btn" id="lang-btn" onclick="toggleLang()">English</button>
+                <div style="display: flex; gap: 8px;">
+                    <button id="theme-btn" class="theme-btn" aria-label="Toggle theme">
+                        <span class="theme-icon">◐</span>
+                        <span class="theme-text" id="text-theme">System</span>
+                    </button>
+                    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">English</button>
+                </div>
             </div>
             <h1>osu! Downloader</h1>
             <p class="subtitle" id="text-subtitle">快速通过镜像链接下载 osu! 谱面，粘贴链接或 ID 即可。</p>
@@ -349,6 +388,7 @@
             document.getElementById('text-mirror-1').innerText = texts.mirror1;
             document.getElementById('text-mirror-2').innerText = texts.mirror2;
             document.getElementById('lang-btn').innerText = texts.langToggle;
+            if (window.updateThemeText) window.updateThemeText();
         }
 
         function handleDownload() {
@@ -392,6 +432,57 @@
             if (e.key === 'Enter') {
                 handleDownload();
             }
+        });
+    </script>
+    <script>
+        // Theme Toggle Logic
+        const themes = ['system', 'light', 'dark'];
+        const icons = { 'system': '◐', 'light': '☼', 'dark': '☾' };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeBtn = document.getElementById('theme-btn');
+            const themeText = themeBtn?.querySelector('.theme-text');
+            const themeIcon = themeBtn?.querySelector('.theme-icon');
+
+            let currentThemeIdx = 0;
+            const savedPreference = localStorage.getItem('theme-preference') || 'system';
+            currentThemeIdx = themes.indexOf(savedPreference);
+            if (currentThemeIdx === -1) currentThemeIdx = 0;
+            updateTheme(themes[currentThemeIdx]);
+
+            themeBtn?.addEventListener('click', () => {
+                currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+                updateTheme(themes[currentThemeIdx]);
+            });
+
+            function updateTheme(themeName) {
+                localStorage.setItem('theme-preference', themeName);
+                if (themeText) {
+                    const translations = {
+                        'zh': { 'system': '跟随系统', 'light': '浅色', 'dark': '深色' },
+                        'en': { 'system': 'System', 'light': 'Light', 'dark': 'Dark' }
+                    };
+                    themeText.textContent = translations[currentLang][themeName] || themeName;
+                }
+                if (themeIcon) themeIcon.textContent = icons[themeName];
+
+                if (themeName === 'system') {
+                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                    localStorage.removeItem('theme');
+                } else {
+                    document.documentElement.setAttribute('data-theme', themeName);
+                    localStorage.setItem('theme', themeName);
+                }
+            }
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (localStorage.getItem('theme-preference') === 'system') {
+                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                }
+            });
+            
+            window.updateThemeText = () => updateTheme(themes[currentThemeIdx]);
         });
     </script>
 </body>

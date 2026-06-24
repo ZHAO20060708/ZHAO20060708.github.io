@@ -10,50 +10,20 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			.hero-section {
-				margin-bottom: 5rem;
-				padding-top: 4rem;
-				position: relative;
-			}
-			.terminal-text {
-				font-size: 1.2em;
-				max-width: 600px;
-				margin: 1rem auto;
-				color: var(--text-muted);
-			}
-			.cursor-blink {
-				animation: blink 1s step-end infinite;
-				color: var(--accent);
-				font-weight: bold;
-			}
-			@keyframes blink {
-				50% { opacity: 0; }
-			}
-			
 			/* App Cards Grid */
 			.tools-grid {
 				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 				gap: 1.5rem;
 				margin-top: 2rem;
 			}
 			.app-card {
 				display: flex;
 				flex-direction: column;
-				padding: 1.5rem;
-				border-radius: 12px;
-				background: var(--bg-card);
-				border: 1px solid var(--border-color);
 				text-decoration: none;
-				transition: all 0.3s ease;
-				position: relative;
-				overflow: hidden;
 			}
 			.app-card:hover {
-				transform: translateY(-4px);
-				border-color: var(--accent);
-				box-shadow: var(--box-shadow-hover);
-				background: var(--bg-card-hover);
+				background: var(--surface-hover);
 			}
 			.app-card-header {
 				display: flex;
@@ -63,99 +33,81 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			}
 			.app-icon {
 				font-size: 2rem;
-				background: var(--bg-surface);
+				background: var(--grid-color);
 				padding: 0.5rem;
 				border-radius: 8px;
 				line-height: 1;
 			}
 			.app-tag {
 				font-size: 0.75rem;
-				color: var(--text-muted);
-				background: var(--bg-surface);
+				color: var(--text-secondary);
+				background: var(--grid-color);
 				padding: 0.2rem 0.6rem;
 				border-radius: 4px;
-				border: 1px solid var(--border-color);
+				border: 1px solid var(--line-color);
 				letter-spacing: 1px;
 			}
 			.app-title {
-				color: var(--text-main);
+				color: var(--text-primary);
 				font-size: 1.25rem;
 				font-weight: 700;
 				margin: 0 0 0.5rem 0;
 				font-family: 'Space Grotesk', sans-serif;
 			}
 			.app-desc {
-				color: var(--text-muted);
+				color: var(--text-secondary);
 				font-size: 0.95rem;
 				line-height: 1.5;
 				margin: 0;
 			}
-			.app-arrow {
-				position: absolute;
-				bottom: 1.5rem;
-				right: 1.5rem;
-				color: var(--accent);
-				font-weight: bold;
-				opacity: 0;
-				transform: translateX(-10px);
-				transition: all 0.3s ease;
-			}
-			.app-card:hover .app-arrow {
-				opacity: 1;
-				transform: translateX(0);
-			}
 		</style>
 	</head>
 	<body>
-		<div class="bg-orb"></div>
-		<Header />
-		<main>
-			<div class="hero-section text-center">
-				<h1 style="font-size: 4.5em; margin-bottom: 0.1em;">Welcome to <span class="text-gradient">My Space</span></h1>
-				<p class="terminal-text font-mono">
-					> Exploring the cosmos of code, design, and ideas.<span class="cursor-blink">_</span>
-				</p>
-			</div>
-
-			<div class="glass-card" style="margin-bottom: 3rem;">
-				<h2>🚀 About Me</h2>
-				<p>
-					Hello! I'm a developer passionate about building modern, sleek, and high-performance applications. 
-					This blog is where I document my journey, share technical insights, and explore the boundaries of web development.
-				</p>
-				<p>
-					Built with <strong>Astro</strong>, tailored with a premium Neon Glass aesthetic.
-				</p>
-				<a href="/blog" class="btn">Read My Blog</a>
-			</div>
-
-			<div style="margin-bottom: 2rem;">
-				<h2>🛠️ Sub-Projects & Tools</h2>
-				<p style="color: var(--text-muted);">Interactive utilities deployed on GitHub Pages.</p>
-				
-				<div class="tools-grid">
-					<a href="https://zhao20060708.github.io/malody2osu/" target="_blank" class="app-card">
-						<div class="app-card-header">
-							<div class="app-icon">🎵</div>
-							<div class="app-tag font-mono">UTILITY</div>
-						</div>
-						<h3 class="app-title">malody2osu</h3>
-						<p class="app-desc">Convert Malody charts to osu! format seamlessly inside your browser.</p>
-						<div class="app-arrow">→</div>
-					</a>
-					
-					<a href="https://zhao20060708.github.io/osu-downloader/" target="_blank" class="app-card">
-						<div class="app-card-header">
-							<div class="app-icon">⬇️</div>
-							<div class="app-tag font-mono">UTILITY</div>
-						</div>
-						<h3 class="app-title">osu-downloader</h3>
-						<p class="app-desc">Download osu! beatmaps easily with a modern web interface.</p>
-						<div class="app-arrow">→</div>
-					</a>
+		<div class="layout-wrapper">
+			<Header />
+			<main>
+				<div style="margin-bottom: 4rem;">
+					<h1 style="margin-bottom: 0.1em;">{SITE_TITLE}</h1>
+					<p style="font-size: 1.1rem;">
+						Exploring the cosmos of code, design, and ideas. A minimalist haven for thoughts.
+					</p>
 				</div>
-			</div>
-		</main>
-		<Footer />
+
+				<div class="tool-card">
+					<h2>About Me</h2>
+					<p>
+						Hello! I'm a developer passionate about building modern, sleek, and high-performance applications. 
+						This blog is where I document my journey, share technical insights, and explore the boundaries of web development.
+					</p>
+					<a href="/blog" class="font-mono" style="text-decoration: underline; font-weight: bold;">-> Read My Blog</a>
+				</div>
+
+				<div class="tool-card">
+					<h2>Sub-Projects & Tools</h2>
+					<p>Interactive utilities deployed on GitHub Pages.</p>
+					
+					<div class="tools-grid">
+						<a href="https://zhao20060708.github.io/malody2osu/" target="_blank" class="tool-card app-card" style="margin-bottom: 0;">
+							<div class="app-card-header">
+								<div class="app-icon">🎵</div>
+								<div class="app-tag font-mono">UTILITY</div>
+							</div>
+							<h3 class="app-title">malody2osu</h3>
+							<p class="app-desc">Convert Malody charts to osu! format seamlessly inside your browser.</p>
+						</a>
+						
+						<a href="https://zhao20060708.github.io/osu-downloader/" target="_blank" class="tool-card app-card" style="margin-bottom: 0;">
+							<div class="app-card-header">
+								<div class="app-icon">⬇️</div>
+								<div class="app-tag font-mono">UTILITY</div>
+							</div>
+							<h3 class="app-title">osu-downloader</h3>
+							<p class="app-desc">Download osu! beatmaps easily with a modern web interface.</p>
+						</a>
+					</div>
+				</div>
+			</main>
+			<Footer />
+		</div>
 	</body>
 </html>

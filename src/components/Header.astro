@@ -18,24 +18,7 @@ import HeaderLink from './HeaderLink.astro';
 	</div>
 </header>
 <style>
-	header {
-		margin-bottom: 3rem;
-		animation: fade-in 0.8s ease-out;
-		position: sticky;
-		top: 0;
-		z-index: 100;
-		padding: 1rem 0;
-		/* Glassmorphism effect */
-		background: rgba(var(--header-bg, 255, 255, 255), 0.7);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-		border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.05));
-	}
 	.nav-container {
-		width: 800px;
-		max-width: calc(100% - 2em);
-		margin: 0 auto;
-		padding: 0 1em;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -104,14 +87,9 @@ import HeaderLink from './HeaderLink.astro';
 		}
 		.theme-btn {
 			position: absolute;
-			top: 1rem;
+			top: 0;
 			right: 0;
 		}
-	}
-
-	@keyframes fade-in {
-		from { opacity: 0; transform: translateY(-10px); }
-		to { opacity: 1; transform: translateY(0); }
 	}
 </style>
 
