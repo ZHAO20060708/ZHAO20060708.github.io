@@ -8,8 +8,15 @@
     <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+    <script>
+        (function() {
+            const pref = localStorage.getItem('theme-preference') || 'system';
+            let t = pref === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : pref;
+            if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        })();
+    </script>
     <style>
         :root {
             --bg-base: #FAFAFA;
@@ -40,7 +47,7 @@
         body {
             background-color: var(--bg-base);
             color: var(--text-primary);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
             min-height: 100vh;
             background-image: 
@@ -97,7 +104,7 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
             transition: color 0.2s;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         .back-link:hover {
@@ -110,7 +117,7 @@
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             color: var(--text-secondary);
             transition: all 0.2s;
@@ -127,7 +134,7 @@
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             color: var(--text-secondary);
             transition: all 0.2s;
@@ -142,7 +149,7 @@
         }
 
         h1 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 3rem;
             font-weight: 700;
             letter-spacing: -0.04em;
@@ -207,7 +214,7 @@
             font-weight: 500;
             color: var(--text-primary);
             margin-bottom: 8px;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         .upload-subtext {
@@ -288,7 +295,7 @@
         .loader {
             width: 24px;
             height: 24px;
-            border: 3px solid rgba(0,0,0,0.1);
+            border: 3px solid var(--line-color);
             border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -321,14 +328,14 @@
             font-size: 1rem;
             font-weight: 500;
             color: var(--text-secondary);
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         footer {
             margin-top: 80px;
             font-size: 0.85rem;
             color: var(--text-secondary);
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             animation: fade-in 0.8s ease-out 0.4s both;
             display: flex;
             align-items: center;

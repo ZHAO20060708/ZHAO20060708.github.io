@@ -7,7 +7,14 @@
     <meta name="description" content="A simple tool to download osu! beatmaps.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            const pref = localStorage.getItem('theme-preference') || 'system';
+            let t = pref === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : pref;
+            if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        })();
+    </script>
     <style>
         :root {
             --bg-base: #FAFAFA;
@@ -36,7 +43,7 @@
         body {
             background-color: var(--bg-base);
             color: var(--text-primary);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             margin: 0;
             min-height: 100vh;
             background-image: 
@@ -92,7 +99,7 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
             transition: color 0.2s;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         .back-link:hover {
@@ -105,7 +112,7 @@
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             color: var(--text-secondary);
             transition: all 0.2s;
@@ -122,7 +129,7 @@
             padding: 4px 12px;
             border-radius: 4px;
             cursor: pointer;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.85rem;
             color: var(--text-secondary);
             transition: all 0.2s;
@@ -137,7 +144,7 @@
         }
 
         h1 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 3rem;
             font-weight: 700;
             letter-spacing: -0.04em;
@@ -182,7 +189,7 @@
 
         label {
             display: block;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 10px;
@@ -193,7 +200,7 @@
             width: 100%;
             padding: 16px;
             font-size: 1rem;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             border: 1px solid var(--input-border);
             border-radius: 4px;
             box-sizing: border-box;
@@ -210,11 +217,11 @@
 
         .download-btn {
             background-color: var(--text-primary);
-            color: white;
+            color: var(--bg-base);
             border: none;
             padding: 16px 32px;
             font-size: 1rem;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-weight: 600;
             cursor: pointer;
             border-radius: 4px;
@@ -240,7 +247,7 @@
             font-size: 0.9rem;
             margin-top: 10px;
             display: none;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         .mirror-selector {
@@ -256,7 +263,7 @@
             padding: 6px 12px;
             border: 1px solid var(--input-border);
             border-radius: 4px;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg-surface);
             outline: none;
             cursor: pointer;
@@ -266,7 +273,7 @@
             margin-top: 80px;
             font-size: 0.85rem;
             color: var(--text-secondary);
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             animation: fade-in 0.8s ease-out 0.4s both;
             display: flex;
             align-items: center;
