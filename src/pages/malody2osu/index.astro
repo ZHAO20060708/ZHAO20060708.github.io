@@ -1,414 +1,74 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malody to osu!mania Converter</title>
-    <!-- 引入 Pyodide -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
-    <script>
-        (function() {
-            const pref = localStorage.getItem('theme-preference') || 'system';
-            let t = pref === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : pref;
-            if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-        })();
-    </script>
-    <style>
-        :root {
-            --bg-base: #FAFAFA;
-            --bg-surface: #FFFFFF;
-            --text-primary: #111111;
-            --text-secondary: #666666;
-            --accent: #FF3366; 
-            --grid-color: rgba(0, 0, 0, 0.03);
-            --line-color: rgba(0, 0, 0, 0.1);
-            --input-border: #DDDDDD;
-            --success: #10B981;
-            --error: #EF4444;
-            --surface-hover: rgba(255, 51, 102, 0.04);
-        }
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Main from "@/components/Main.astro";
+import config from "@/config";
+---
 
-        :root[data-theme="dark"] {
-            --bg-base: #0f111a;
-            --bg-surface: rgba(255, 255, 255, 0.03);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #8b5cf6; 
-            --grid-color: rgba(255, 255, 255, 0.05);
-            --line-color: rgba(255, 255, 255, 0.1);
-            --input-border: #333333;
-            --surface-hover: rgba(139, 92, 246, 0.06);
-        }
+<Layout title={`Malody to osu!mania | ${config.site.title}`}>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" slot="head" />
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js" slot="head" is:inline></script>
+  
+  <Header activeNav="malody2osu" />
+  
+  <Main pageTitle="Malody to osu!mania" pageDesc="无需安装，完全在浏览器本地运行，支持手机与电脑">
+    <div class="mt-8 bg-background border border-border p-8 rounded shadow-sm relative before:absolute before:left-[-1px] before:top-[-1px] before:bottom-[-1px] before:w-[3px] before:bg-accent">
+      <div id="initStatus" class="text-center p-8 flex flex-col items-center gap-6">
+          <div class="loader w-12 h-12 border-4 border-border border-t-accent rounded-full animate-spin"></div>
+          <div id="initText" class="text-base font-medium text-muted-foreground">正在初始化 Python 环境 (约需几秒钟)...</div>
+      </div>
 
-        body {
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center top;
-            display: flex;
-            justify-content: center;
-        }
-
-        .layout-wrapper {
-            width: 100%;
-            max-width: 800px;
-            padding: 100px 20px;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        .layout-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 40px;
-            width: 1px;
-            background-color: var(--line-color);
-            z-index: 0;
-        }
-
-        header, main, footer {
-            padding-left: 60px;
-            position: relative;
-            z-index: 1;
-        }
-
-        header {
-            margin-bottom: 60px;
-            animation: fade-in 0.8s ease-out;
-            position: relative;
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            transition: color 0.2s;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .back-link:hover {
-            color: var(--accent);
-        }
-
-        .lang-btn {
-            background: none;
-            border: 1px solid var(--input-border);
-            padding: 4px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-
-        .lang-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .theme-btn {
-            background: none;
-            border: 1px solid var(--input-border);
-            padding: 4px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .theme-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            margin: 0 0 16px 0;
-            color: var(--text-primary);
-        }
-
-        p.subtitle {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0;
-        }
-
-        main {
-            animation: fade-in 0.8s ease-out 0.2s both;
-        }
-
-        .converter-card {
-            background: var(--bg-surface);
-            border: 1px solid rgba(0,0,0,0.06);
-            padding: 40px;
-            border-radius: 2px;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03);
-            position: relative;
-        }
-
-        .converter-card::before {
-            content: '';
-            position: absolute;
-            left: -1px;
-            top: -1px;
-            bottom: -1px;
-            width: 3px;
-            background-color: var(--accent);
-        }
-
-        .upload-area {
-            border: 2px dashed var(--input-border);
-            border-radius: 4px;
-            padding: 48px 24px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background-color: var(--bg-base);
-        }
-
-        .upload-area:hover, .upload-area.dragover {
-            background-color: var(--surface-hover);
-            border-color: var(--accent);
-        }
-
-        .upload-icon {
-            font-size: 48px;
-            color: var(--accent);
-            margin-bottom: 16px;
-        }
-
-        .upload-text {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .upload-subtext {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .file-list {
-            margin-top: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-
-        .file-item {
-            background-color: var(--bg-base);
-            border: 1px solid var(--input-border);
-            border-radius: 4px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            animation: slideIn 0.3s ease-out forwards;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .file-icon {
-            color: var(--text-secondary);
-            font-size: 28px;
-        }
-
-        .file-info {
-            flex-grow: 1;
-            min-width: 0;
-        }
-
-        .file-name {
-            font-size: 0.95rem;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 4px;
-            color: var(--text-primary);
-        }
-
-        .file-status-text {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .status-icon-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-        }
-
-        .status-icon {
-            font-size: 24px;
-        }
-
-        .status-icon.success { color: var(--success); }
-        .status-icon.error { color: var(--error); }
-        
-        .loader {
-            width: 24px;
-            height: 24px;
-            border: 3px solid var(--line-color);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        #initStatus {
-            text-align: center;
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-        }
-        
-        #initStatus .loader {
-            width: 48px;
-            height: 48px;
-            border-width: 4px;
-        }
-
-        #initStatus > div:last-child {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            font-family: 'Outfit', sans-serif;
-        }
-
-        footer {
-            margin-top: 80px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-family: 'Outfit', sans-serif;
-            animation: fade-in 0.8s ease-out 0.4s both;
-            display: flex;
-            align-items: center;
-        }
-
-        footer::before {
-            content: '';
-            display: block;
-            width: 10px;
-            height: 1px;
-            background-color: var(--line-color);
-            margin-right: 15px;
-            margin-left: -30px;
-        }
-
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            .layout-wrapper::before { left: 20px; }
-            header, main, footer { padding-left: 40px; }
-            h1 { font-size: 2.2rem; }
-            .converter-card { padding: 24px; }
-            footer::before { margin-left: -20px; width: 5px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="layout-wrapper">
-        <header>
-            <div class="top-bar">
-                <a href="../" class="back-link" id="text-back">← 返回工作区</a>
-                <div style="display: flex; gap: 8px;">
-                    <button id="theme-btn" class="theme-btn" aria-label="Toggle theme">
-                        <span class="theme-icon">◐</span>
-                        <span class="theme-text" id="text-theme">System</span>
-                    </button>
-                    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">English</button>
-                </div>
-            </div>
-            <h1>Malody to osu!</h1>
-            <p class="subtitle" id="text-subtitle">无需安装，完全在浏览器本地运行，支持手机与电脑</p>
-        </header>
-
-        <main>
-            <div class="converter-card">
-                <div id="initStatus">
-                    <div class="loader"></div>
-                    <div id="initText">正在初始化 Python 环境 (约需几秒钟)...</div>
-                </div>
-
-                <div id="uploadContainer" class="hidden">
-                    <div id="uploadArea" class="upload-area">
-                        <span class="material-symbols-rounded upload-icon">upload_file</span>
-                        <div class="upload-text" id="text-upload-title">点击选择 .mcz 文件，或将文件拖拽至此处</div>
-                        <div class="upload-subtext" id="text-upload-sub">支持同时上传多个文件</div>
-                        <input type="file" id="fileInput" multiple>
-                    </div>
-                    
-                    <div id="fileList" class="file-list"></div>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            &copy; 2026 ZHAO. Engineered with precision.
-        </footer>
+      <div id="uploadContainer" class="hidden">
+          <div id="uploadArea" class="border-2 border-dashed border-border rounded-lg py-12 px-6 text-center cursor-pointer transition-all bg-background hover:bg-accent/5 hover:border-accent group">
+              <span class="material-symbols-rounded text-5xl text-accent mb-4">upload_file</span>
+              <div class="text-lg font-medium text-foreground mb-2" id="text-upload-title">点击选择 .mcz 文件，或将文件拖拽至此处</div>
+              <div class="text-sm text-muted-foreground" id="text-upload-sub">支持同时上传多个文件</div>
+              <input type="file" id="fileInput" multiple class="hidden">
+          </div>
+          
+          <div id="fileList" class="mt-6 flex flex-col gap-3 max-h-96 overflow-y-auto pr-2"></div>
+      </div>
     </div>
+  </Main>
+  <Footer />
+</Layout>
 
-    <!-- 内嵌 Python 核心转换逻辑 -->
-    <script type="text/python" id="pythonCode">
+<style is:global>
+  .loader {
+      border-top-color: var(--color-accent) !important;
+  }
+  @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+  .file-item {
+      animation: slideIn 0.3s ease-out forwards;
+      @apply bg-background border border-border rounded p-4 flex items-center gap-4;
+  }
+  .file-icon {
+      @apply text-muted-foreground text-3xl;
+  }
+  .file-info {
+      @apply flex-grow min-w-0;
+  }
+  .file-name {
+      @apply text-[0.95rem] font-medium whitespace-nowrap overflow-hidden text-ellipsis mb-1 text-foreground;
+  }
+  .file-status-text {
+      @apply text-[0.85rem] text-muted-foreground;
+  }
+  .status-icon-container {
+      @apply flex items-center justify-center w-8 h-8;
+  }
+  .status-icon {
+      @apply text-2xl;
+  }
+  .status-icon.success { @apply text-green-500; }
+  .status-icon.error { @apply text-red-500; }
+</style>
+
+<script type="text/python" id="pythonCode" is:inline>
 import os
 import json
 import zipfile
@@ -578,8 +238,8 @@ def process_file_bytes(file_bytes, original_filename):
         return "ERROR", str(traceback.format_exc()), b""
     </script>
 
-    <script>
-        const i18n = {
+<script is:inline>
+const i18n = {
             'en': {
                 back: '← Back to Workspace',
                 subtitle: 'No installation required, completely runs locally in browser. Supports mobile and PC.',
@@ -619,13 +279,13 @@ def process_file_bytes(file_bytes, original_filename):
 
         function updateLang() {
             const texts = i18n[currentLang];
-            document.getElementById('text-back').innerText = texts.back;
-            document.getElementById('text-subtitle').innerText = texts.subtitle;
+            
+            
             const initTextEl = document.getElementById('initText');
             if (initTextEl) initTextEl.innerText = texts.initWait;
             document.getElementById('text-upload-title').innerText = texts.uploadTitle;
             document.getElementById('text-upload-sub').innerText = texts.uploadSub;
-            document.getElementById('lang-btn').innerText = texts.langToggle;
+            
             
             document.querySelectorAll('.file-item').forEach(item => {
                 const id = item.id;
@@ -645,7 +305,7 @@ def process_file_bytes(file_bytes, original_filename):
                     }
                 }
             });
-            if (window.updateThemeText) window.updateThemeText();
+            
         }
 
         let pyodide;
@@ -834,57 +494,5 @@ def process_file_bytes(file_bytes, original_filename):
                 statusIcon.innerHTML = `<span class="material-symbols-rounded status-icon error">error</span>`;
             }
         }
-    </script>
-    <script>
-        // Theme Toggle Logic
-        const themes = ['system', 'light', 'dark'];
-        const icons = { 'system': '◐', 'light': '☼', 'dark': '☾' };
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeBtn = document.getElementById('theme-btn');
-            const themeText = themeBtn?.querySelector('.theme-text');
-            const themeIcon = themeBtn?.querySelector('.theme-icon');
-
-            let currentThemeIdx = 0;
-            const savedPreference = localStorage.getItem('theme-preference') || 'system';
-            currentThemeIdx = themes.indexOf(savedPreference);
-            if (currentThemeIdx === -1) currentThemeIdx = 0;
-            updateTheme(themes[currentThemeIdx]);
-
-            themeBtn?.addEventListener('click', () => {
-                currentThemeIdx = (currentThemeIdx + 1) % themes.length;
-                updateTheme(themes[currentThemeIdx]);
-            });
-
-            function updateTheme(themeName) {
-                localStorage.setItem('theme-preference', themeName);
-                if (themeText) {
-                    const translations = {
-                        'zh': { 'system': '跟随系统', 'light': '浅色', 'dark': '深色' },
-                        'en': { 'system': 'System', 'light': 'Light', 'dark': 'Dark' }
-                    };
-                    themeText.textContent = translations[currentLang][themeName] || themeName;
-                }
-                if (themeIcon) themeIcon.textContent = icons[themeName];
-
-                if (themeName === 'system') {
-                    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-                    localStorage.removeItem('theme');
-                } else {
-                    document.documentElement.setAttribute('data-theme', themeName);
-                    localStorage.setItem('theme', themeName);
-                }
-            }
-
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                if (localStorage.getItem('theme-preference') === 'system') {
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                }
-            });
-            
-            window.updateThemeText = () => updateTheme(themes[currentThemeIdx]);
-        });
-    </script>
-</body>
-</html>
+    
+</script>

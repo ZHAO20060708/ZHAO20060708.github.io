@@ -1,0 +1,73 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Main from "@/components/Main.astro";
+import config from "@/config";
+---
+
+<Layout title={`osu! Downloader | ${config.site.title}`}>
+  <Header activeNav="osu-downloader" />
+  
+  <Main pageTitle="osu! Downloader" pageDesc="快速通过镜像链接下载 osu! 谱面，粘贴链接或 ID 即可。">
+    <div class="mt-8 bg-background border border-border p-8 rounded shadow-sm relative before:absolute before:left-[-1px] before:top-[-1px] before:bottom-[-1px] before:w-[3px] before:bg-accent">
+      <div class="mb-6">
+          <label for="beatmap-input" id="text-label" class="block font-semibold mb-2 text-foreground">谱面链接或 ID (Beatmapset)</label>
+          <input type="text" id="beatmap-input" placeholder="例如 https://osu.ppy.sh/beatmapsets/123456 或 123456" autocomplete="off" class="w-full p-4 text-base bg-background text-foreground border border-border rounded focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all">
+          <div class="text-accent text-sm mt-2 hidden" id="error-msg"></div>
+      </div>
+
+      <button class="w-full bg-foreground text-background py-4 font-semibold rounded hover:bg-accent hover:-translate-y-0.5 shadow transition-all flex justify-center items-center cursor-pointer" id="download-btn" onclick="handleDownload()">下载谱面</button>
+
+      <div class="mt-6 text-sm text-muted-foreground flex items-center gap-3">
+          <span id="text-mirror">下载镜像：</span>
+          <select id="mirror-select" class="p-2 border border-border rounded bg-background text-foreground cursor-pointer outline-none">
+              <option value="direct" id="text-mirror-1">osu.direct (首选)</option>
+              <option value="catboy" id="text-mirror-2">catboy.best (备用)</option>
+          </select>
+      </div>
+    </div>
+  </Main>
+  <Footer />
+</Layout>
+
+<script is:inline>
+    window.handleDownload = function() {
+        const input = document.getElementById('beatmap-input').value.trim();
+        const errorMsg = document.getElementById('error-msg');
+        const mirror = document.getElementById('mirror-select').value;
+        
+        errorMsg.style.display = 'none';
+
+        if (!input) {
+            errorMsg.innerText = "请输入链接或 ID。";
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        let setId = '';
+        const match = input.match(/(?:beatmapsets\/|d\/|^)(\d+)/);
+        if (match) {
+            setId = match[1];
+        } else {
+            errorMsg.innerText = "输入格式无效，无法提取谱面 ID。";
+            errorMsg.style.display = 'block';
+            return;
+        }
+
+        let downloadUrl = '';
+        if (mirror === 'direct') {
+            downloadUrl = `https://osu.direct/api/d/${setId}`;
+        } else {
+            downloadUrl = `https://catboy.best/d/${setId}`;
+        }
+
+        window.location.href = downloadUrl;
+    }
+
+    document.getElementById('beatmap-input')?.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            window.handleDownload();
+        }
+    });
+</script>
