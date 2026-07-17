@@ -1,113 +1,138 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import IconRss from "@/assets/icons/IconRss.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Socials from "@/components/Socials.astro";
+import Card from "@/components/Card.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const { socials, posts: postsConfig } = config;
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const posts = await getCollection("posts");
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const homePath = getRelativeLocaleUrl(locale, "");
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			/* App Cards Grid */
-			.tools-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-				gap: 1.5rem;
-				margin-top: 2rem;
-			}
-			.app-card {
-				display: flex;
-				flex-direction: column;
-				text-decoration: none;
-			}
-			.app-card:hover {
-				background: var(--surface-hover);
-			}
-			.app-card-header {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-start;
-				margin-bottom: 1rem;
-			}
-			.app-icon {
-				font-size: 2rem;
-				background: var(--grid-color);
-				padding: 0.5rem;
-				border-radius: 8px;
-				line-height: 1;
-			}
-			.app-tag {
-				font-size: 0.75rem;
-				color: var(--text-secondary);
-				background: var(--grid-color);
-				padding: 0.2rem 0.6rem;
-				border-radius: 4px;
-				border: 1px solid var(--line-color);
-				letter-spacing: 1px;
-			}
-			.app-title {
-				color: var(--text-primary);
-				font-size: 1.25rem;
-				font-weight: 700;
-				margin: 0 0 0.5rem 0;
-				font-family: 'Space Grotesk', sans-serif;
-			}
-			.app-desc {
-				color: var(--text-secondary);
-				font-size: 0.95rem;
-				line-height: 1.5;
-				margin: 0;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="layout-wrapper">
-			<Header />
-			<main>
-				<div style="margin-bottom: 4rem;">
-					<h1 style="margin-bottom: 0.1em;">{SITE_TITLE}</h1>
-					<p style="font-size: 1.1rem;">
-						Exploring the cosmos of code, design, and ideas. A minimalist haven for thoughts.
-					</p>
-				</div>
+<Layout>
+  <Header />
+  <main
+    id="main-content"
+    data-layout="index"
+    data-home-path={homePath}
+    class="app-layout"
+  >
+    <section id="hero" class="border-border border-b pt-8 pb-6">
+      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
+        Mingalaba
+      </h1>
+      <a
+        target="_blank"
+        href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
+        class="inline-block"
+        aria-label="RSS Feed"
+        title="RSS Feed"
+      >
+        <IconRss
+          width={20}
+          height={20}
+          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
+        />
+        <span class="sr-only">RSS Feed</span>
+      </a>
 
-				<div class="tool-card">
-					<h2>About Me</h2>
-					<p>
-						Hello! I'm a developer passionate about building modern, sleek, and high-performance applications. 
-						This blog is where I document my journey, share technical insights, and explore the boundaries of web development.
-					</p>
-					<a href="/blog" class="font-mono" style="text-decoration: underline; font-weight: bold;">-> Read My Blog</a>
-				</div>
+      <p>
+        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
+        blog theme. This theme follows best practices and provides accessibility
+        out of the box. Light and dark mode are supported by default. Moreover,
+        additional color schemes can also be configured.
+      </p>
+      <p class="mt-2">
+        Read the blog posts or check{" "}
+        <LinkButton
+          class="hover:text-accent underline decoration-dashed underline-offset-4"
+          href="https://github.com/satnaing/astro-paper#readme"
+        >
+          README
+        </LinkButton>{" "}
+        for more info.
+      </p>
+      {
+        socials.length > 0 && (
+          <div class="mt-4 flex max-sm:flex-col sm:items-center">
+            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
+              {t.home.socialLinks}:
+            </div>
+            <Socials />
+          </div>
+        )
+      }
+    </section>
 
-				<div class="tool-card">
-					<h2>Sub-Projects & Tools</h2>
-					<p>Interactive utilities deployed on GitHub Pages.</p>
-					
-					<div class="tools-grid">
-						<a href="https://zhao20060708.github.io/malody2osu/" target="_blank" class="tool-card app-card" style="margin-bottom: 0;">
-							<div class="app-card-header">
-								<div class="app-icon">🎵</div>
-								<div class="app-tag font-mono">UTILITY</div>
-							</div>
-							<h3 class="app-title">malody2osu</h3>
-							<p class="app-desc">Convert Malody charts to osu! format seamlessly inside your browser.</p>
-						</a>
-						
-						<a href="https://zhao20060708.github.io/osu-downloader/" target="_blank" class="tool-card app-card" style="margin-bottom: 0;">
-							<div class="app-card-header">
-								<div class="app-icon">⬇️</div>
-								<div class="app-tag font-mono">UTILITY</div>
-							</div>
-							<h3 class="app-title">osu-downloader</h3>
-							<p class="app-desc">Download osu! beatmaps easily with a modern web interface.</p>
-						</a>
-					</div>
-				</div>
-			</main>
-			<Footer />
-		</div>
-	</body>
-</html>
+    {
+      featuredPosts.length > 0 && (
+        <section
+          id="featured"
+          class:list={[
+            "pt-12 pb-6",
+            { "border-border border-b": recentPosts.length > 0 },
+          ]}
+        >
+          <h2 class="text-2xl font-semibold tracking-wide">
+            {t.home.featured}
+          </h2>
+          <ul>
+            {featuredPosts.map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">
+            {t.home.recentPosts}
+          </h2>
+          <ul>
+            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="my-8 text-center">
+      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
+        {t.home.allPosts}
+        <IconArrowRight class="inline-block rtl:-rotate-180" />
+      </LinkButton>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset;
+    const baseRoot = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+    if (indexLayout?.layout) {
+      sessionStorage.setItem("backUrl", indexLayout.homePath ?? baseRoot);
+    }
+  });
+</script>

@@ -1,19 +1,36 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import { getEntry, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import config from "@/config";
+
+const about = await getEntry("pages", "about");
+
+if (!about) {
+  throw new Error(
+    "Missing content entry: `about.md` or `about.mdx` in `src/content/pages/`"
+  );
+}
+
+const { Content } = await render(about);
 ---
 
 <Layout
-	title="About Me"
-	description="Learn more about Zhao — a developer passionate about building modern, high-performance applications."
-	pubDate={new Date('June 24 2026')}
-	heroImage={AboutHeroImage}
+  title={`${about.data.title} | ${config.site.title}`}
+  description={about.data.description}
+  ogImage={about.data.ogImage}
+  canonicalURL={about.data.canonicalURL}
 >
-	<p>
-		Hello! I'm Zhao, a developer passionate about building modern, sleek, and high-performance applications. 
-		This is my personal space where I document my journey, share technical insights, and explore the boundaries of web development.
-	</p>
-	<p>
-		Welcome to my cosmos of code, design, and ideas!
-	</p>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={about.data.title} class="app-prose">
+    <Content />
+  </Main>
+
+  <Footer />
 </Layout>

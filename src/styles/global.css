@@ -1,208 +1,38 @@
-/* Google Fonts loaded via <link> in BaseHead.astro for better performance */
+@import "tailwindcss";
+@import "./theme.css";
+@import "./typography.css";
+@import "rehype-callouts/theme/obsidian";
 
-:root {
-	--bg-base: #FAFAFA;
-	--bg-surface: #FFFFFF;
-	--text-primary: #111111;
-	--text-secondary: #666666;
-	--text-main: #111111;
-	--text-muted: #666666;
-	--accent: #FF3366;
-	--grid-color: rgba(0, 0, 0, 0.03);
-	--line-color: rgba(0, 0, 0, 0.1);
-	--input-border: #DDDDDD;
-	--surface-hover: rgba(255, 51, 102, 0.04);
-	--bg-card: #FFFFFF;
-	--bg-card-hover: rgba(0, 0, 0, 0.02);
-	--border-color: rgba(0, 0, 0, 0.1);
-	--box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@layer base {
+  * {
+    @apply border-border outline-accent/75;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+  a,
+  button {
+    @apply outline-accent outline-offset-1 focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
-:root[data-theme="dark"] {
-	--bg-base: #0f111a;
-	--bg-surface: rgba(255, 255, 255, 0.03);
-	--text-primary: #f8fafc;
-	--text-secondary: #94a3b8;
-	--text-main: #f8fafc;
-	--text-muted: #94a3b8;
-	--accent: #8b5cf6;
-	--grid-color: rgba(255, 255, 255, 0.05);
-	--line-color: rgba(255, 255, 255, 0.1);
-	--input-border: #333333;
-	--surface-hover: rgba(139, 92, 246, 0.06);
-	--bg-card: rgba(255, 255, 255, 0.05);
-	--bg-card-hover: rgba(255, 255, 255, 0.08);
-	--border-color: rgba(255, 255, 255, 0.1);
-	--box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.3);
+@utility max-w-app {
+  @apply max-w-3xl;
 }
 
-body {
-	background-color: var(--bg-base);
-	color: var(--text-primary);
-	font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-	margin: 0;
-	min-height: 100vh;
-	background-image: 
-		linear-gradient(var(--grid-color) 1px, transparent 1px),
-		linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-	background-size: 40px 40px;
-	background-position: center top;
-	display: flex;
-	justify-content: center;
-	transition: background-color 0.3s ease, color 0.3s ease;
-	-webkit-font-smoothing: antialiased;
+@utility app-layout {
+  @apply max-w-app mx-auto w-full px-4;
 }
 
-.layout-wrapper {
-	width: 100vw;
-	max-width: 800px;
-	padding: 100px 20px 20px 20px;
-	position: relative;
-	box-sizing: border-box;
+@utility active-nav {
+  @apply underline decoration-wavy decoration-2 underline-offset-8;
 }
 
-.layout-wrapper::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 40px;
-	width: 1px;
-	background-color: var(--line-color);
-	z-index: 0;
-}
-
-header, main, footer {
-	padding-left: 60px;
-	position: relative;
-	z-index: 1;
-}
-
-header {
-	margin-bottom: 60px;
-	animation: fade-in 0.8s ease-out;
-}
-
-main {
-	animation: fade-in 0.8s ease-out 0.2s both;
-}
-
-.tool-card {
-	background: var(--bg-surface);
-	border: 1px solid rgba(0,0,0,0.06);
-	padding: 40px;
-	border-radius: 2px;
-	box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03);
-	position: relative;
-	margin-bottom: 24px;
-}
-
-:root[data-theme="dark"] .tool-card {
-	border-color: rgba(255,255,255,0.05);
-}
-
-.tool-card::before {
-	content: '';
-	position: absolute;
-	left: -1px;
-	top: -1px;
-	bottom: -1px;
-	width: 3px;
-	background-color: var(--accent);
-}
-
-h1, h2, h3, h4, h5, h6 {
-	font-family: 'Outfit', sans-serif;
-	margin: 0 0 1rem 0;
-	color: var(--text-primary);
-	line-height: 1.2;
-	font-weight: 700;
-	letter-spacing: -0.04em;
-}
-
-h1 { font-size: 3rem; }
-h2 { font-size: 2.5em; }
-
-a {
-	color: var(--text-secondary);
-	text-decoration: none;
-	transition: color 0.3s ease;
-}
-
-a:hover {
-	color: var(--accent);
-}
-
-p {
-	margin-bottom: 1.5em;
-	color: var(--text-secondary);
-	line-height: 1.6;
-}
-
-img {
-	max-width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-
-code {
-	font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-	padding: 4px 8px;
-	background-color: var(--grid-color);
-	border-radius: 6px;
-	font-size: 0.85em;
-	color: var(--accent);
-}
-
-pre {
-	padding: 1.5em;
-	border-radius: 4px;
-	background-color: var(--bg-surface) !important;
-	border: 1px solid var(--line-color);
-}
-
-pre > code {
-	all: unset;
-	color: inherit;
-}
-
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0.5rem 0 0.5rem 1.5rem;
-	margin: 1.5rem 0;
-	font-size: 1.2em;
-	font-style: italic;
-	color: var(--text-secondary);
-	background: var(--surface-hover);
-	border-radius: 0 4px 4px 0;
-}
-
-hr {
-	border: none;
-	border-top: 1px solid var(--line-color);
-	margin: 3rem 0;
-}
-
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	clip: rect(1px 1px 1px 1px);
-	white-space: nowrap;
-}
-
-@keyframes fade-in {
-	from { opacity: 0; transform: translateY(10px); }
-	to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 600px) {
-	.layout-wrapper::before { left: 20px; }
-	header, main, footer { padding-left: 40px; }
-	h1 { font-size: 2.2rem; }
-	.tool-card { padding: 24px; }
+:target {
+  scroll-margin-block: 1rem;
 }
