@@ -99,12 +99,18 @@ const isActive = (path: string) => {
           </a>
         </li>
         <li class="col-span-2">
-          <a href="/malody2osu/" class="hover:text-accent">
+          <a
+            href="/malody2osu/"
+            class:list={{ "active-nav": isActive("/malody2osu") }}
+          >
             Malody2Osu
           </a>
         </li>
         <li class="col-span-2">
-          <a href="/osu-downloader/" class="hover:text-accent">
+          <a
+            href="/osu-downloader/"
+            class:list={{ "active-nav": isActive("/osu-downloader") }}
+          >
             Osu Downloader
           </a>
         </li>

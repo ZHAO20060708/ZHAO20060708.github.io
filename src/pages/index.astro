@@ -68,6 +68,40 @@ const homePath = getRelativeLocaleUrl(locale, "");
       }
     </section>
 
+    <section id="tools" class="pt-12 pb-6 border-border border-b">
+      <h2 class="text-2xl font-semibold tracking-wide">
+        Tools & Projects
+      </h2>
+      <ul>
+        <li class="my-6">
+          <a
+            href="/malody2osu/"
+            class:list={[
+              "text-accent inline-block text-lg font-medium",
+              "decoration-dashed underline-offset-4 hover:underline",
+              "focus-visible:no-underline focus-visible:underline-offset-0",
+            ]}
+          >
+            <h3 class="text-lg font-medium decoration-dashed hover:underline">Malody2Osu</h3>
+          </a>
+          <p>A web tool to convert Malody charts to osu!mania format.</p>
+        </li>
+        <li class="my-6">
+          <a
+            href="/osu-downloader/"
+            class:list={[
+              "text-accent inline-block text-lg font-medium",
+              "decoration-dashed underline-offset-4 hover:underline",
+              "focus-visible:no-underline focus-visible:underline-offset-0",
+            ]}
+          >
+            <h3 class="text-lg font-medium decoration-dashed hover:underline">Osu Downloader</h3>
+          </a>
+          <p>A handy downloader for osu! beatmaps.</p>
+        </li>
+      </ul>
+    </section>
+
     {
       featuredPosts.length > 0 && (
         <section
