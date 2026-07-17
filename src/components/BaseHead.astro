@@ -32,6 +32,11 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
 <Font cssVariable="--font-atkinson" preload />
 
 <!-- Canonical URL -->
@@ -56,21 +61,12 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
 
-<!-- Theme Script -->
+<!-- Theme Script (uses same key 'theme-preference' as Header.astro toggle) -->
 <script is:inline>
-	const theme = (() => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-			return localStorage.getItem('theme');
-		}
-		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			return 'dark';
-		}
-		return 'light';
+	const pref = (typeof localStorage !== 'undefined' && localStorage.getItem('theme-preference')) || 'system';
+	const resolved = (() => {
+		if (pref === 'light' || pref === 'dark') return pref;
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	})();
-	
-	if (theme === 'light') {
-		document.documentElement.setAttribute('data-theme', 'light');
-	} else {
-		document.documentElement.setAttribute('data-theme', 'dark');
-	}
+	document.documentElement.setAttribute('data-theme', resolved);
 </script>

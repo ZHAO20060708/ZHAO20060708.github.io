@@ -719,19 +719,47 @@ def process_file_bytes(file_bytes, original_filename):
                 const id = 'file-' + Math.random().toString(36).substr(2, 9);
                 const texts = i18n[currentLang];
                 
-                const itemHtml = `
-                    <div class="file-item" id="${id}">
-                        <span class="material-symbols-rounded file-icon">draft</span>
-                        <div class="file-info">
-                            <div class="file-name" title="${file.name}">${file.name}</div>
-                            <div class="file-status-text" id="${id}-text" data-status="waiting">${texts.waitProcess}</div>
-                        </div>
-                        <div class="status-icon-container" id="${id}-icon">
-                            <span class="material-symbols-rounded status-icon" style="opacity: 0.5;">schedule</span>
-                        </div>
-                    </div>
-                `;
-                fileList.insertAdjacentHTML('afterbegin', itemHtml);
+                // Build DOM elements instead of innerHTML to prevent XSS via file.name
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.id = id;
+
+                const icon = document.createElement('span');
+                icon.className = 'material-symbols-rounded file-icon';
+                icon.textContent = 'draft';
+
+                const info = document.createElement('div');
+                info.className = 'file-info';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'file-name';
+                nameDiv.title = file.name;
+                nameDiv.textContent = file.name;
+
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'file-status-text';
+                statusDiv.id = id + '-text';
+                statusDiv.setAttribute('data-status', 'waiting');
+                statusDiv.textContent = texts.waitProcess;
+
+                info.appendChild(nameDiv);
+                info.appendChild(statusDiv);
+
+                const statusContainer = document.createElement('div');
+                statusContainer.className = 'status-icon-container';
+                statusContainer.id = id + '-icon';
+
+                const scheduleIcon = document.createElement('span');
+                scheduleIcon.className = 'material-symbols-rounded status-icon';
+                scheduleIcon.style.opacity = '0.5';
+                scheduleIcon.textContent = 'schedule';
+                statusContainer.appendChild(scheduleIcon);
+
+                item.appendChild(icon);
+                item.appendChild(info);
+                item.appendChild(statusContainer);
+
+                fileList.prepend(item);
                 
                 fileQueue.push({ file, id });
             }
