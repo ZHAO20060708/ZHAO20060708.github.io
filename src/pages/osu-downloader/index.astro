@@ -3,11 +3,13 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Main from "@/components/Main.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
 import config from "@/config";
 ---
 
 <Layout title={`osu! Downloader | ${config.site.title}`}>
   <Header activeNav="osu-downloader" />
+  <Breadcrumb />
   
   <Main pageTitle="osu! Downloader" pageDesc="快速通过镜像链接下载 osu! 谱面，粘贴链接或 ID 即可。">
     <div class="mt-8 bg-background border border-border p-8 rounded shadow-sm relative before:absolute before:left-[-1px] before:top-[-1px] before:bottom-[-1px] before:w-[3px] before:bg-accent">

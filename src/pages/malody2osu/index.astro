@@ -3,6 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Main from "@/components/Main.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
 import config from "@/config";
 import pythonCode from "./core.py?raw";
 ---
@@ -12,19 +13,20 @@ import pythonCode from "./core.py?raw";
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js" slot="head" is:inline></script>
   
   <Header activeNav="malody2osu" />
+  <Breadcrumb />
   
-  <Main pageTitle="Malody to osu!mania" pageDesc="无需安装，完全在浏览器本地运行，支持手机与电脑">
+  <Main pageTitle="Malody to osu!mania" pageDesc="无需安装，完全在浏览器本地运行，支持手机与电脑 / No installation required, completely runs locally in browser. Supports mobile and PC.">
     <div class="mt-8 bg-background border border-border p-8 rounded shadow-sm relative before:absolute before:left-[-1px] before:top-[-1px] before:bottom-[-1px] before:w-[3px] before:bg-accent">
       <div id="initStatus" class="text-center p-8 flex flex-col items-center gap-6">
           <div class="loader w-12 h-12 border-4 border-border border-t-accent rounded-full animate-spin"></div>
-          <div id="initText" class="text-base font-medium text-muted-foreground">正在初始化 Python 环境 (约需几秒钟)...</div>
+          <div id="initText" class="text-base font-medium text-muted-foreground text-center">正在初始化 Python 环境<br><span class="text-sm">Initializing Python Environment (takes a few seconds)...</span></div>
       </div>
 
       <div id="uploadContainer" class="hidden">
           <div id="uploadArea" class="border-2 border-dashed border-border rounded-lg py-12 px-6 text-center cursor-pointer transition-all bg-background hover:bg-accent/5 hover:border-accent group">
               <span class="material-symbols-rounded text-5xl text-accent mb-4">upload_file</span>
-              <div class="text-lg font-medium text-foreground mb-2" id="text-upload-title">点击选择 .mcz 文件，或将文件拖拽至此处</div>
-              <div class="text-sm text-muted-foreground" id="text-upload-sub">支持同时上传多个文件</div>
+              <div class="text-lg font-medium text-foreground mb-2" id="text-upload-title">点击选择 .mcz 文件，或将文件拖拽至此处<br><span class="text-sm text-muted-foreground">Click to select .mcz files, or drag & drop here</span></div>
+              <div class="text-sm text-muted-foreground mt-4" id="text-upload-sub">支持同时上传多个文件 / Supports multiple file upload at once</div>
               <input type="file" id="fileInput" multiple class="hidden">
           </div>
           
@@ -73,74 +75,15 @@ import pythonCode from "./core.py?raw";
 <script type="text/python" id="pythonCode" is:inline set:html={pythonCode} />
 
 <script is:inline>
-const i18n = {
-            'en': {
-                back: '← Back to Workspace',
-                subtitle: 'No installation required, completely runs locally in browser. Supports mobile and PC.',
-                initWait: 'Initializing Python Environment (takes a few seconds)...',
-                initFail: 'Environment initialization failed. Please refresh and try again.',
-                uploadTitle: 'Click to select .mcz files, or drag & drop here',
-                uploadSub: 'Supports multiple file upload at once',
-                unsupportedFiles: (n) => `${n} unsupported files filtered. Please upload .mcz or .zip files only.`,
-                waitProcess: 'Waiting to process...',
-                processing: 'Converting...',
-                fail: 'Conversion failed',
-                success: 'Conversion successful! Download starting.',
-                langToggle: '中文'
-            },
-            'zh': {
-                back: '← 返回工作区',
-                subtitle: '无需安装，完全在浏览器本地运行，支持手机与电脑',
-                initWait: '正在初始化 Python 环境 (约需几秒钟)...',
-                initFail: '环境初始化失败，请刷新重试',
-                uploadTitle: '点击选择 .mcz 文件，或将文件拖拽至此处',
-                uploadSub: '支持同时上传多个文件',
-                unsupportedFiles: (n) => `有 ${n} 个文件格式不支持，已自动过滤。请仅上传 .mcz 或 .zip 文件。`,
-                waitProcess: '等待处理...',
-                processing: '正在转换...',
-                fail: '转换失败',
-                success: '转换成功！即将开始下载。',
-                langToggle: 'English'
-            }
+        const texts = {
+            initFail: '环境初始化失败，请刷新重试 / Environment initialization failed. Please refresh and try again.',
+            unsupportedFiles: (n) => `有 ${n} 个文件格式不支持，已自动过滤。请仅上传 .mcz 或 .zip 文件。\n${n} unsupported files filtered. Please upload .mcz or .zip files only.`,
+            waitProcess: '等待处理... / Waiting to process...',
+            processing: '正在转换... / Converting...',
+            fail: '转换失败 / Conversion failed',
+            success: '转换成功！即将开始下载。 / Conversion successful! Download starting.',
+            errorPrefix: '错误 / Error: '
         };
-
-        let currentLang = 'zh';
-
-        function toggleLang() {
-            currentLang = currentLang === 'zh' ? 'en' : 'zh';
-            updateLang();
-        }
-
-        function updateLang() {
-            const texts = i18n[currentLang];
-            
-            
-            const initTextEl = document.getElementById('initText');
-            if (initTextEl) initTextEl.innerText = texts.initWait;
-            document.getElementById('text-upload-title').innerText = texts.uploadTitle;
-            document.getElementById('text-upload-sub').innerText = texts.uploadSub;
-            
-            
-            document.querySelectorAll('.file-item').forEach(item => {
-                const id = item.id;
-                const statusTextEl = document.getElementById(`${id}-text`);
-                if (statusTextEl) {
-                    const status = statusTextEl.getAttribute('data-status');
-                    if (status === 'waiting') {
-                        statusTextEl.innerText = texts.waitProcess;
-                    } else if (status === 'processing') {
-                        statusTextEl.innerText = texts.processing;
-                    } else if (status === 'success') {
-                        statusTextEl.innerText = texts.success;
-                    } else if (status === 'fail') {
-                        statusTextEl.innerText = texts.fail;
-                    } else if (status && status.startsWith('error:')) {
-                        statusTextEl.innerText = (currentLang === 'zh' ? '错误: ' : 'Error: ') + status.substring(6);
-                    }
-                }
-            });
-            
-        }
 
         let pyodide;
         let isProcessing = false;
@@ -148,12 +91,20 @@ const i18n = {
 
         async function init() {
             try {
+                if (typeof loadPyodide === 'undefined') {
+                    await new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                }
                 pyodide = await loadPyodide();
                 await pyodide.runPythonAsync(document.getElementById('pythonCode').innerText);
                 document.getElementById('initStatus').classList.add('hidden');
                 document.getElementById('uploadContainer').classList.remove('hidden');
             } catch (err) {
-                const texts = i18n[currentLang];
                 document.getElementById('initStatus').innerHTML = `
                     <span class="material-symbols-rounded" style="color: var(--error); font-size: 48px;">error</span>
                     <div style="color: var(--error);">${texts.initFail}</div>
@@ -200,7 +151,7 @@ const i18n = {
             }
             
             if (invalidCount > 0) {
-                alert(i18n[currentLang].unsupportedFiles(invalidCount));
+                alert(texts.unsupportedFiles(invalidCount));
             }
             
             if (validFiles.length > 0) {
@@ -210,8 +161,7 @@ const i18n = {
 
         function enqueueFiles(files) {
             for (let file of files) {
-                const id = 'file-' + Math.random().toString(36).substr(2, 9);
-                const texts = i18n[currentLang];
+                const id = 'file-' + Math.random().toString(36).substring(2, 11);
                 
                 // Build DOM elements instead of innerHTML to prevent XSS via file.name
                 const item = document.createElement('div');
@@ -323,7 +273,7 @@ const i18n = {
                 console.error(err);
                 const errMsg = err.message || err;
                 statusText.setAttribute('data-status', 'error:' + errMsg);
-                statusText.innerText = (currentLang === 'zh' ? '错误: ' : 'Error: ') + errMsg;
+                statusText.innerText = texts.errorPrefix + errMsg;
                 statusText.style.color = 'var(--error)';
                 statusIcon.innerHTML = `<span class="material-symbols-rounded status-icon error">error</span>`;
             }

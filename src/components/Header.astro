@@ -109,7 +109,7 @@ const isActive = (path: string) => {
         <li class="col-span-2">
           <a
             href="/osu-downloader/"
-            class:list={{ "active-nav": isActive("/osu-downloader") }}
+            class:list={["whitespace-nowrap", { "active-nav": isActive("/osu-downloader") }]}
           >
             Osu Downloader
           </a>
